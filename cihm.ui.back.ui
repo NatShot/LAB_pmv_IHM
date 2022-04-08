@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CIhm</class>
+ <widget class="QMainWindow" name="CIhm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1211</width>
+    <height>913</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>CIhm</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout_4">
+    <item row="0" column="0">
+     <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1">
+      <item>
+       <layout class="QGridLayout" name="gridLayout" rowstretch="1,0,0">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
+        <item row="1" column="1">
+         <widget class="QPushButton" name="pushButton">
+          <property name="text">
+           <string>Test Capteur</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QPushButton" name="pushButton_4">
+          <property name="text">
+           <string>POWER</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="3">
+         <widget class="QPushButton" name="pushButton_6">
+          <property name="text">
+           <string>AVM</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="4">
+         <widget class="QPushButton" name="pushButton_7">
+          <property name="text">
+           <string>Pret</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QPushButton" name="pushButton_5">
+          <property name="text">
+           <string>Préparation</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="5">
+         <widget class="QPushButton" name="pushButton_8">
+          <property name="text">
+           <string>Partez</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QPushButton" name="pushButton_3">
+          <property name="text">
+           <string>START/STOP</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLineEdit" name="lineEdit">
+          <property name="text">
+           <string>Nom de la session</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Gestion de la course :</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="5">
+         <widget class="QPushButton" name="pushButton_9">
+          <property name="text">
+           <string>STOP</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Gestion de la session :</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QPushButton" name="pushButton_2">
+          <property name="text">
+           <string>Export CSV</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QTableWidget" name="tableWidget">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>1</horstretch>
+          <verstretch>1</verstretch>
+         </sizepolicy>
+        </property>
+        <attribute name="horizontalHeaderStretchLastSection">
+         <bool>false</bool>
+        </attribute>
+        <row>
+         <property name="text">
+          <string>Nouvelle ligne</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Nouvelle ligne</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Nouvelle ligne</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Nouvelle ligne</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Nouvelle ligne</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Nouvelle ligne</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Nouvelle ligne</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Nouvelle ligne</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Nouvelle ligne</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Nouvelle ligne</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Nouvelle ligne</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Nouvelle ligne</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Nouvelle ligne</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Nouvelle ligne</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Nouvelle ligne</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Nouvelle ligne</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Nouvelle ligne</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Nouvelle ligne</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Nouvelle ligne</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Nouvelle ligne</string>
+         </property>
+        </row>
+        <column>
+         <property name="text">
+          <string>Nouvelle colonne</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Coureur 1</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Vent 1</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Vitesse 1</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Coureur 2</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Nouvelle colonne</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Vent 2</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Temps 2</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1211</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuSyst_me">
+    <property name="title">
+     <string>Système</string>
+    </property>
+    <addaction name="actionRed_marrage"/>
+    <addaction name="actionArreter"/>
+    <addaction name="actionQuitter"/>
+   </widget>
+   <addaction name="menuSyst_me"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionRed_marrage">
+   <property name="text">
+    <string>Redémarrage</string>
+   </property>
+  </action>
+  <action name="actionArreter">
+   <property name="text">
+    <string>Arreter</string>
+   </property>
+  </action>
+  <action name="actionQuitter">
+   <property name="text">
+    <string>Quitter</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
