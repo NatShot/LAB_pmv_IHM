@@ -23,6 +23,7 @@ private:
     Ui::CLoginDialog *ui;
     int cpt;
     bool bascule;
+    CBdd *_bdd;
 
 signals:
     void sig_badPassword();
