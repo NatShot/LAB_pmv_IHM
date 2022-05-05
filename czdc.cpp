@@ -28,4 +28,12 @@ void CZdc::getDatas(T_DATAS &datas)
     lock();
     memcpy(&datas, _datas, sizeof(T_DATAS));
     unlock();
+}
+
+void CZdc::sauveAddrClient(CGererClient *_Cgc)
+{
+    QString addrClient = *_Cgc;
+    emit sig_addrClient(); //Connect avec slot de CApp
 } // getMesures
+
+

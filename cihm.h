@@ -44,7 +44,7 @@ private slots:
     void on_pbPret_clicked();
     void on_pbPartez_clicked();
     void on_pbStop_clicked();
-    void on_pbStart_clicked();
+    void on_pbStart_clicked();// Start la session => Devient Stop la session
     void on_tableWidget_cellClicked(int row, int column);
     void on_reboot();
     void on_shutdown();
@@ -53,6 +53,7 @@ private slots:
     void on_afficherResVitesse(QString resultat, int ordre, int ligne);
     void on_afficherNomsEleves(QStringList nomsEleves);
     void on_exportCsv();
+    void on_btnState(char boutons);
 
 signals:
     void sig_timerStart();

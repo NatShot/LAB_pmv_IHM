@@ -26,9 +26,11 @@ public:
     ~CZdc();
     void sauveDatas(T_DATAS &datas);
     void getDatas(T_DATAS &datas);
+    void sauveAddrClient(CGererClient *_Cgc);
 
 signals:
     void sig_newDatas();
+    void sig_addrClient();
 
 private:
     T_DATAS *_datas;

@@ -11,8 +11,12 @@ CONFIG += c++11
 SOURCES += \
     biblis/cgpio.cpp \
     capp.cpp \
+    cbdd.cpp \
     ccapteurpassage.cpp \
+    cgererclient.cpp \
     clogindialog.cpp \
+    cprotocole.cpp \
+    cserveur.cpp \
     czdc.cpp \
     main.cpp \
     cihm.cpp \
@@ -22,10 +26,14 @@ SOURCES += \
 HEADERS += \
     biblis/cgpio.h \
     capp.h \
+    cbdd.h \
     ccapteurpassage.h \
+    cgererclient.h \
     cihm.h \
     clogindialog.h \
     ccsv.h \
+    cprotocole.h \
+    cserveur.h \
     csignalisation.h \
     czdc.h
 

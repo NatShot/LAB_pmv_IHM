@@ -197,6 +197,33 @@ void CIhm::on_pbStart_clicked()
         }
     }//IF STOP
 }
+
+void CIhm::on_btnState(char boutons)
+{
+    switch(boutons)
+    {
+    case 1:
+        on_pbStart_clicked();
+        break;
+    case 2:
+        on_pbPreparation_clicked();
+        break;
+    case 4:
+        on_pbAvm_clicked();
+        break;
+    case 8:
+        on_pbPret_clicked();
+        break;
+    case 16:
+        on_pbPartez_clicked();
+        break;
+    case 32:
+        on_pbStop_clicked();
+        break;
+    default:
+        break;
+    }
+}
             //----BOUTONS----//
 
                         //

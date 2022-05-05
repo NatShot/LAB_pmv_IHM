@@ -5,10 +5,6 @@ CApp::CApp()
     _capteurPassage1 = new CCapteurPassage(nullptr, 17, 1);
     _capteurPassage2 = new CCapteurPassage(nullptr, 27, 2);
     _ligne = -1;
-    
-    _protocole = new CProtocole(QObject *parent) : QObject(parent);
-    connect(this, &CApp::sig_resVitesse, _protocole, &CProtocole::on_resVitesse);
-    connect(this, &CApp::sig_resTemps, _protocole, &CProtocole::on_resTemps);
 }
 
 CApp::~CApp()
