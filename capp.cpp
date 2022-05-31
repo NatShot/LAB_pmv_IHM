@@ -5,6 +5,8 @@ CApp::CApp()
     _capteurPassage1 = new CCapteurPassage(nullptr, 17, 1);
     _capteurPassage2 = new CCapteurPassage(nullptr, 27, 2);
     _ligne = -1;
+
+    _serv = new CServeur();
 }
 
 CApp::~CApp()

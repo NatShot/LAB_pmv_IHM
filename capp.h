@@ -38,6 +38,8 @@ private:
     CCapteurPassage *_capteurPassage2;
     int _ligne;
 
+    CServeur *_serv;
+
     void calculateTime(QDateTime dt2, int ordre);
     void calculateSpeed(int ordre);
 

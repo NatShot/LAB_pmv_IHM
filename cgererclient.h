@@ -23,7 +23,6 @@ public slots:
     void on_sendJson(QString type, QString param);
 
 private:
-    int init();
     CProtocole _prot;
 
 signals:

@@ -105,4 +105,3 @@ void CGererClient::on_erreurReseau(QAbstractSocket::SocketError err)
 {
 
 }
-

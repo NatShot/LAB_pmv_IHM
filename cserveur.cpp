@@ -3,7 +3,10 @@
 
 CServeur::CServeur(QObject *parent): QTcpServer(parent){
     _serv.listen(QHostAddress::Any, PORT);
-    connect(&_serv, &QTcpServer::newConnection, this, &CServeur::onNewConnection);
+    connect(&_serv, &QTcpServer::newConnection, this, &CServeur::on_newConnection);
+    _noPort = PORT;
+
+    init();
 }
 
 CServeur::~CServeur()
@@ -16,28 +19,26 @@ void CServeur::onPrintTxt(QString txt)
 
 }
 
-void CServeur::on_newConnectionClient()
-{
-
-}
-
 void CServeur::onPrintError(QString txt){
 
 }
 
 
-void CServeur::onNewConnection(){
+void CServeur::on_newConnection(){
     QString mess = "Un client vient de se connecter";
     qDebug() << mess;
-    QTcpSocket *sock = this->nextPendingConnection();
-    CGererClient *client = new CGererClient(sock);
-    qDebug() << "Nouvelle connexion : " << sock;
-    if (sock == nullptr)
+    _sock = new QTcpSocket(this->nextPendingConnection());
+//    qDebug() << "local Adress" << sock->localAddress().toString();
+    _client = new CGererClient(_sock);
+    qDebug() << "Nouvelle connexion : " << _sock;
+
+    if (_sock == nullptr)
         emit sig_erreur(QAbstractSocket::ConnectionRefusedError);
-    connect(sock, &QTcpSocket::readyRead, client, &CGererClient::onReadyRead);
+
+    connect(_sock, &QTcpSocket::readyRead, _client, &CGererClient::onReadyRead);
     //connect(newClient, &QAbstractSocket::disconnected, this, &CServeurTcp::deleteLater);
-    connect(sock, &QAbstractSocket::disconnected, this, &CServeur::on_disconnectedClient);
-    connect(sock, QOverload<QAbstractSocket::SocketError>::of(&QAbstractSocket::error),
+    connect(_sock, &QAbstractSocket::disconnected, this, &CServeur::on_disconnectedClient);
+    connect(_sock, QOverload<QAbstractSocket::SocketError>::of(&QAbstractSocket::error),
               [=](QAbstractSocket::SocketError err)
         {
         QString txt;
@@ -123,8 +124,13 @@ void CServeur::onNewConnection(){
 void CServeur::on_disconnectedClient()
 {
     QTcpSocket *client = (QTcpSocket *)sender(); // Déterminer quel client ?
-    _listeClients.removeOne(client);
     //delete client;
     emit sig_evenementServeur("Déconnexion du client");
-    emit sig_maJClients(_listeClients);
+}
+
+int CServeur::init()
+{
+    listen(QHostAddress::Any, _noPort);
+    connect(this, &CServeur::newConnection, this, &CServeur::on_newConnection);
+    return 1;
 }

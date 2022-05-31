@@ -20,14 +20,15 @@ public:
 
 public slots:
     void onPrintTxt(QString txt);
-    void on_newConnectionClient();
     void on_disconnectedClient();
 
 private:
     QTcpServer _serv;
-    QList<QTcpSocket *> _listeClients;
+    QTcpSocket *_sock;
+    CGererClient *_client;
     quint16 _noPort;
     QString cgererclient;
+    int init();
 
 
 signals:
@@ -38,7 +39,7 @@ signals:
 
 private slots:
     void onPrintError(QString err);
-    void onNewConnection();
+    void on_newConnection();
 
 };
 
