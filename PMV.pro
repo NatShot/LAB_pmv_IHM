@@ -1,4 +1,4 @@
-QT       += core gui widgets
+QT       += core gui widgets network sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT +=
 
@@ -10,6 +10,7 @@ CONFIG += c++11
 
 SOURCES += \
     biblis/cgpio.cpp \
+    biblis/ci2c.cpp \
     capp.cpp \
     cbdd.cpp \
     ccapteurpassage.cpp \
@@ -21,21 +22,24 @@ SOURCES += \
     main.cpp \
     cihm.cpp \
     ccsv.cpp \
-    csignalisation.cpp
+    csignalisation.cpp \
+    canemometre.cpp
 
 HEADERS += \
     biblis/cgpio.h \
+    biblis/ci2c.h \
     capp.h \
     cbdd.h \
     ccapteurpassage.h \
     cgererclient.h \
-    cihm.h \
     clogindialog.h \
-    ccsv.h \
     cprotocole.h \
     cserveur.h \
+    czdc.h \
+    ccsv.h \
+    cihm.h \
     csignalisation.h \
-    czdc.h
+    canemometre.h
 
 FORMS += \
     cihm.ui \

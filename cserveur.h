@@ -7,28 +7,34 @@
 #include <QList>
 
 #include "cgererclient.h"
-#include "CZdc.h"
+#include "czdc.h"
 
 #define PORT 2314
 
-class CServeur : public QObject
+class CServeur : public QTcpServer
 {
     Q_OBJECT
 public:
     CServeur(QObject *parent = nullptr);
     ~CServeur();
-    QTcpSocket *_sock;
 
 public slots:
     void onPrintTxt(QString txt);
+    void on_newConnectionClient();
+    void on_disconnectedClient();
 
 private:
     QTcpServer _serv;
+    QList<QTcpSocket *> _listeClients;
+    quint16 _noPort;
+    QString cgererclient;
 
 
 signals:
-    void sigPrintTxt(QString txt);
-    void sigPrintError(QString err);
+    void sig_evenementServeur(QString eve);
+    void sig_erreur(QAbstractSocket::SocketError err);
+    void sig_adrClient(QString adrClient);
+    void sig_maJClients(QList<QTcpSocket *> liste);
 
 private slots:
     void onPrintError(QString err);

@@ -1,37 +1,32 @@
 #include "cbdd.h"
-#include "ui_cbdd.h"
 
 using namespace std;
-CBdd::CBdd(QWidget *parent)
-    : QMainWindow(parent),
-      ui(new Ui::CBdd)
+CBdd::CBdd(QObject *parent): QObject(parent)
 {
-    ui->setupUi(this);
-
     PMVBdd = QSqlDatabase::addDatabase("QSQLITE");
     PMVBdd.setDatabaseName(sqlPath);
 
     QSqlQuery sqlQuery(PMVBdd);
 
     if(!PMVBdd.open()) {
-        cout << "Unable to open database" << endl;
+        qDebug() << "Unable to open database" << endl;
     } else {
-        cout << "Opened database" << endl;
+        qDebug() << "Opened database" << endl;
     }
 
 }
 
 CBdd::~CBdd()
 {
-    delete ui;
 }
 
-bool CBdd::isSessionActive() {
-    if (startSession == 1) {
-        isSessionActive = true;
-    } else {
-        isSessionActive = false;
-    }
+bool CBdd::isSessionActive(QString sessionName) {
+    sqlQuery.prepare("SELECT * FROM Session WHERE Nom_Session = :Nom_Session;");
+    sqlQuery.bindValue(":Nom_Session", sessionName);
+    sqlQuery.exec();
+
+    bool isSessionFound = sqlQuery.size() == 1;
+    return isSessionFound;
 }
 
 void CBdd::setSessionActive(bool s) {
@@ -39,7 +34,7 @@ void CBdd::setSessionActive(bool s) {
 }
 
 void CBdd::setSessionName(QString sessionName) {
-    sqlQuery.prepare("UPDATE Session SET (:id, :Nom_Session)");
+    sqlQuery.prepare("INSERT INTO Session (:id, :Nom_Session)");
     sqlQuery.bindValue(":id", 1);
     sqlQuery.bindValue(":Nom_Session", sessionName);
     sqlQuery.exec();
@@ -49,7 +44,7 @@ void CBdd::getSession(T_SESSION &data) {
 
 }
 
-void CBdd::setListeEleves(QStringList liste) {
+void CBdd::setListeEleves(QList<QString> liste) {
     sqlQuery.prepare("UPDATE Eleves SET (:id, :Nom, :Prenom)");
 
     sqlQuery.bindValue(":id", index);
@@ -62,38 +57,18 @@ void CBdd::setCoureurAuDepart(QString name, int ligne, int couloir) {
 
 }
 
-void CBdd::setValeursCoureur(int couloir, int ligne, QString resTemps, QString resVitesse, QString vent) {
-        sqlQuery.prepare("UPDATE Coureurs SET (ID_Coureurs, ID_Course, Nom, Prenom, Temps, Vent, Vitesse)"
-                         "VALUES (:ID_Coureurs, :ID_Course, :Nom, :Prenom, :Temps, :Vent, :Vitesse);");
-
-
-        //si ordre = 0 alors, affecte les valeurs au coureur gauche
-        //si ordre = 1 alors, affecte les valeurs au coureur droit
+void CBdd::on_valeursCoureur(QString resTemps, QString resVitesse, QString id, QString vent){
+    sqlQuery.prepare("INSERT INTO Coureurs (Temps, Vent, Vitesse)"
+                     "VALUES (:Temps, :Vent, :Vitesse);"
+                     "WHERE \"ID_Coureurs\" = \"" + id + "\" ;");
+    sqlQuery.bindValue(":Temps", resTemps);
+    sqlQuery.bindValue(":Vitesse", resVitesse);
+    sqlQuery.bindValue(":Vent", vent);
+    sqlQuery.exec();
 }
 
 void CBdd::on_elevesRcv(QString eleves) {
 
-}
-
-void CBdd::on_resTemps(QString resTemps) {
-    sqlQuery.prepare("INSERT INTO Coureurs (ID_coureurs, ID_Course, Nom, Prenom, Temps, Vent, Vitesse)"
-                     "VALUES (:ID_Coureurs, :ID_Course, :Nom, :Prenom, :Temps, :Vent, :Vitesse);");
-    sqlQuery.bindValue(":Temps", resTemps);
-    sqlQuery.exec();
-}
-
-void CBdd::on_resVent(QString resVent) {
-    sqlQuery.prepare("INSERT INTO Coureurs (ID_Coureurs, ID_Course, Nom, Prenom, Temps, Vent, Vitesse)"
-                     "VALUES (:ID_Coureurs, :ID_Course, :Nom, :Prenom, :Temps, :Vent, :Vitesse);");
-    sqlQuery.bindValue(":Vent", resVent);
-    sqlQuery.exec();
-}
-
-void CBdd::on_resVitesse(QString resVitesse) {
-    sqlQuery.prepare("INSERT INTO Coureurs (ID_Coureurs, ID_Course, Nom, Prenom, Temps, Vent, Vitesse)"
-                     "VALUES (:ID_Coureurs, :ID_Course, :Nom, :Prenom, :Temps, :Vent, :Vitesse);");
-    sqlQuery.bindValue(":Vitesse", resVitesse);
-    sqlQuery.exec();
 }
 
 bool CBdd::verifConnection(QString Login, QString Pass) {

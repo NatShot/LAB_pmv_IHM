@@ -3,27 +3,6 @@
 
 CProtocole::CProtocole(QObject *parent) : QObject(parent)
 {
-//trame << "transfertCsv" << "authCheck_TRa" << "authCheck_RaT" << "btnPrep";
-    connect(_sock, &QTcpSocket::readyRead, this, &CProtocole::timeRun);
-}
-
-QJsonObject CProtocole::btnAVM()
-{
-
-}
-
-QJsonObject CProtocole::btnPrep()
-{
-
-}
-
-QJsonObject CProtocole::btnStartSession()
-{
-
-}
-
-QJsonObject CProtocole::btnStopSession()
-{
 
 }
 
@@ -32,100 +11,210 @@ CProtocole::~CProtocole()
 
 }
 
-QJsonObject CProtocole::decodeTrame()
-{
-//    switch(trames.indexOf(trame)){
+QString CProtocole::prepareJsonTransferRunner(int idCourse, QList<int> idRunners){
+    QString json;
+    json = addEnteteJson("transferRunner");
+    json += addSectionJson("data");
+    json += addParamIntJson("id", idCourse, 4);
+    json += addParamTableauJson("runners", idRunners, 4, false);
+    json += addPiedJson(2);
+    return json;
+} //prepareJsonTransferRunner
 
-    //    }
+bool CProtocole::parseJsonTransferAllRunners(int *nbCoureurs, QList<T_COUREUR> *coureurs){
+    return true;
 }
 
-QJsonObject CProtocole::getCSV(QString csv)
-{
+bool CProtocole::parseJsonBtnState(QString trame, T_BTN_STATE *state){
+    if(trame.indexOf("btnState") < 0)
+        return false;
+    QStringList elements = trame.split(','); //6 éléments
+    state->btnSess = (elements[1].split(':')[2].indexOf('1') > 0 ? true : false);
+    state->btnSess = (elements[2].split(':')[1].indexOf('1') > 0 ? true : false);
+    state->btnAVM = (elements[3].split(':')[1].indexOf('1') > 0 ? true : false);
+    state->btnReady = (elements[4].split(':')[1].indexOf('1') > 0 ? true : false);
+    state->btnGo = (elements[5].split(':')[1].indexOf('1') > 0 ? true : false);
+    return true;
+} //parseJsonBtnState
 
+bool CProtocole::parseJsonTimeRun(int *idCourse, T_TIMERUN *timeRun){
+    return true;
+} //parseJsonTimeRun
+
+bool CProtocole::parseJsonTransferRunner(int *idCourse, QList<QString> *idRunners){
+    return true;
+} //parseJsonTransferRunner
+
+bool CProtocole::parseJsonAuthCheck(QString trame, QString &login, QString &mdp){
+    if(trame.indexOf("authCheck") < 0)
+        return false;
+    QStringList elements = trame.split(',');
+    login = elements[1].split(':')[2].split('"')[1];
+    mdp = elements[2].split(':')[1].split('"')[1];
+    return true;
+} //parseJsonAuthCheck
+
+bool CProtocole::parseJsonGetCsv(QString trame){
+    // Retourne -1 si incorrect sinon >= 0
+    return trame.indexOf("getCsv");
 }
 
-QJsonObject CProtocole::sendTrame()
+QString CProtocole::parseJsonGetControl()
 {
 
-}
+} //parseJsonGetCsv
 
-QString CProtocole::timeRun(int ligne)
+QString CProtocole::prepareJsonTimeRun(int idCourse, T_TIMERUN timeRun){
+    QString json;
+    json = addEnteteJson("timeRun");
+    json += addSectionJson("data");
+    json += addParamTexteJson("id", QString::number(idCourse), 4);
+    json += addParamTexteJson("time1", timeRun.time1, 4);
+    json += addParamTexteJson("wind1", timeRun.wind1, 4);
+    json += addParamTexteJson("speed1", timeRun.speed1, 4);
+    json += addParamTexteJson("time2", timeRun.time2, 4);
+    json += addParamTexteJson("wind2", timeRun.wind2, 4);
+    json += addParamTexteJson("speed2", timeRun.speed2, 4, false);
+    json += addPiedJson(2);
+    return json;
+} //prepareJsonTimeRun
+
+QString CProtocole::prepareJsonTransfertCsv(int nbCoureurs, T_CSV *csv){
+    QString json;
+    json = addEnteteJson("transferCsv");
+    json = addSectionJson("data");
+    json += addParamTexteJson("runnersCnt", QString::number(nbCoureurs), 4);
+
+    for(int i=0; i < nbCoureurs; i++){
+        json += addSectionJson("runner" + QString::number(i+1), 4);
+        json += addParamTexteJson("idRun", QString::number(csv[i].idRun), 6);
+        json += addParamTexteJson("name", csv[i].name, 6);
+        json += addParamTexteJson("time", csv[i].time, 6);
+        json += addParamTexteJson("wind", csv[i].wind, 6);
+        json += addParamTexteJson("speed", csv[i].speed, 6, false);
+        json += addFinSectionJson(4, (i < (nbCoureurs - 1) ? true : false));
+    } //for
+    json += addPiedJson(2);
+    return json;
+} //prepareJsonTransfertCsv
+
+QString CProtocole::prepareJsonAuthCheck(bool res){
+    QString json;
+    json = addEnteteJson("authCheck");
+    json += addSectionJson("data");
+    json += addParamIntJson("success", (res ? '1' : '0'), 4, false);
+    json += addPiedJson(2);
+    return json;
+} //preapreJsonAuthCheck
+
+QString CProtocole::prepareJsonBtnState(T_BTN_STATE state){
+    QString json;
+    json = addEnteteJson("btnState");
+    json += addSectionJson("data");
+    json += addParamTexteJson("btnSess", QString::number(state.btnSess), 4);
+    json += addParamTexteJson("btnPrep", QString::number(state.btnPrep), 4);
+    json += addParamTexteJson("btnAVM", QString::number(state.btnAVM), 4);
+    json += addParamTexteJson("btnReady", QString::number(state.btnReady), 4);
+    json += addParamTexteJson("btnGo", QString::number(state.btnGo), 4, false);
+    json += addPiedJson(2);
+    return json;
+} //preapreJsonBtnState
+
+QString CProtocole::addEnteteJson(QString commande, bool suite){
+    QString json;
+    json.append("{\"command\": \"" + commande + "\"");
+    if(suite)
+        json.append(",");
+    return json;
+} //addEnteteJson
+
+QString CProtocole::addPiedJson(int nb){
+    QString json;
+    if(nb == 2)
+        json.append("}");
+    json.append("}");
+    return json;
+} //addPiedJson
+
+QString CProtocole::addSectionJson(QString nom, int dec){
+    QString json;
+    json.fill(' ', dec);
+    json.append("\"" + nom + "\": {");
+    return json;
+} //addSectionJson
+
+QString CProtocole::addFinSectionJson(int dec, int suite){
+    QString json;
+    json.fill(' ', dec);
+    json.append("}");
+    if(suite)
+        json.append(",");
+    return json;
+} //addFinSectionJson
+
+QString CProtocole::addParamTexteJson(QString nom, QString valeur, int dec, bool suite){
+    QString json;
+    json.fill(' ', dec);
+    json.append("\"" + nom + "\": \"" + valeur + "\"");
+    if(suite)
+        json.append(',');
+    return json;
+} //addParamTexteJson
+
+QString CProtocole::addParamIntJson(QString nom, int valeur, int dec, bool suite){
+    QString json;
+    json.fill(' ', dec);
+    json.append("\"" + nom + "\": " + valeur);
+    if(suite)
+        json.append(",");
+    return json;
+} //addParamIntJson
+
+QString CProtocole::addParamTableauJson(QString nom, QList<int> valeur, int dec, bool suite){
+    QString json;
+    json.fill(' ', dec);
+    json.append("\""+nom+"\": [");
+    for (int i=0 ; i<valeur.size() ; i++) {
+        json.fill(' ', dec+2);
+        json.append(valeur.at(i));
+        if (i < valeur.size()-1)
+            json.append(",");
+    } // for
+    json.fill(' ', dec);
+    json.append("]");
+    if (suite)
+        json.append(",");
+    return json;
+} //addParamTableauJson
+
+QString CProtocole::filtreAvantParser(QString trame)
 {
-    QByteArray timeRun = QString("{\"command\": \"timeRun\", \"data\": { \"id\": " + QString::number(ligne) + ", \"time1\":" + _time1 + ", \"wind1\":" + _wind1 + ", \"speed1\":" + _speed1 + ", \"time2\":" + _time2 + ", \"wind2\":" + _wind2 + ",\"speed2\":" + _speed2 + "}}").toStdString().c_str();
-    return 0;
+    int pos;
+    do {
+        pos = trame.indexOf("\r\n");
+        if (pos >= 0)
+            trame.remove(pos, 2);
+
+    } while(pos >= 0);
+    do {
+        pos = trame.indexOf("\n");
+        if (pos >= 0)
+            trame.remove(pos, 1);
+    } while(pos >= 0);
+    do {
+        pos = trame.indexOf("\r");
+        if (pos >= 0)
+            trame.remove(pos, 1);
+    } while(pos >= 0);
+    return trame;
 }
 
-QJsonObject CProtocole::transfertAllRunners()
-{
-
-}
-
-QJsonObject CProtocole::transfertCSV()
-{
-
-}
-
-QJsonObject CProtocole::transfertRunner(int ID)
-{
-
-}
-
-bool CProtocole::authCheck()
-{
-
-}
-
-bool CProtocole::oldSessionExist()
-{
-
-}
-
-bool CProtocole::rememberLastSession()
+void CProtocole::on_resVitesse(QString resVitesse, int ordre, int ligne)
 {
 
 }
 
 void CProtocole::on_resTemps(QString resTemps, int ordre, int ligne)
 {
-    _ligne = ligne;
-    if(ordre == 1) {
-        _time1.toStdString() = resTemps.toStdString();
-    }
-    else if (ordre == 2) {
-        _time2.toStdString() = resTemps.toStdString();
-    }
-}
 
-void CProtocole::on_resVitesse(QString resVitesse, int ordre, int ligne)
-{
-    _ligne = ligne;
-    if (ordre == 1) {
-        _speed1.toStdString() = resVitesse.toStdString();
-    }
-    else if (ordre == 2) {
-        _speed2.toStdString() = resVitesse.toStdString();
-    }
-}
-
-
-QJsonObject CProtocole::onReplyFinished(QNetworkReply *reply)
-{
-    QByteArray response = reply->readAll();
-
-    if (!response.isEmpty()) {
-
-    QJsonDocument jdoc = QJsonDocument::fromJson(response);
-    QJsonObject jobj = jdoc.object();
-    QJsonObject data = jobj ["data"].toObject();
-
-    QString dataType = data["type"].toString();
-    qDebug() << "Filtre du type de data : " << dataType;
-
-    emit finished();
-    }else{
-        std::cout << "Erreur" << std::endl;
-    }
-    reply->deleteLater();
-
-}
-
+} //filtreAvantParser

@@ -32,8 +32,8 @@ void CZdc::getDatas(T_DATAS &datas)
 
 void CZdc::sauveAddrClient(CGererClient *_Cgc)
 {
-    QString addrClient = *_Cgc;
-    emit sig_addrClient(); //Connect avec slot de CApp
+    //QString addrClient = *_Cgc->;
+    //emit sig_addrClient(); //Connect avec slot de CApp
 } // getMesures
 
 

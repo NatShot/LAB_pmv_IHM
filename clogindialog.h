@@ -6,6 +6,7 @@
 #include <QCloseEvent>
 #include <stdio.h>
 #include <stdlib.h>
+#include "cbdd.h"
 
 namespace Ui {
 class CLoginDialog;

@@ -3,11 +3,15 @@
 
 #include <QObject>
 
-class CAnemometre
+class CAnemometre : public QObject
 {
+    Q_OBJECT
 public:
-    CAnemometre();
-    ~CAnemometre();
+    explicit CAnemometre(QObject *parent = nullptr);
+
+signals:
+
+public slots:
 };
 
 #endif // CANEMOMETRE_H

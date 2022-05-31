@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QTcpSocket>
+#include <QHostAddress>
 
 #include "cprotocole.h"
 
@@ -11,26 +12,24 @@ class CGererClient : public QObject
     Q_OBJECT
 public:
     explicit CGererClient(QTcpSocket *sock = nullptr, QObject *parent = nullptr);
-    //CProtocole *_protocole;
-    ~CGererClient(){}
+    ~CGererClient();
 
-signals:
-    void sigPrintTxt(QString txt);
-    void sigPrintError(QString err);
-    void sigEndClient();
-
-private slots:
-    void onReadyRead();
-
-private:
+    int emettreVersClients(QString mess);
     QTcpSocket *_sock;
 
-    QByteArray _request;
+public slots:
+    void on_erreurReseau(QAbstractSocket::SocketError err);
+    void onReadyRead();
+    void on_sendJson(QString type, QString param);
 
-    void prepareAnswerOK(){}
-    void prepareAnswerErr(){}
-    void answer(){}
+private:
+    int init();
+    CProtocole _prot;
+
+signals:
+    void sig_dataClient(QString adrIpClient, QString data);
 
 };
 
 #endif // CGERERCLIENT_H
+

@@ -1,10 +1,15 @@
 #ifndef CAPP_H
 #define CAPP_H
+
 #include <QMainWindow>
 #include <QObject>
 #include <QDateTime>
 #include <QString>
+
 #include "ccapteurpassage.h"
+#include "cserveur.h"
+#include "canemometre.h"
+#include "cbdd.h"
 
 class CApp : public QObject
 {

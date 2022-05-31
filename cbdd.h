@@ -6,43 +6,35 @@
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlError>
 #include <QtSql/QSql>
-#include <iostream>
-#include "canemometre.h"
-#include "cprotocole.h"
+#include <QDebug>
 
 #define PATH "../../"
-
-QT_BEGIN_NAMESPACE
-namespace Ui { class CBdd; }
-QT_END_NAMESPACE
 
 typedef struct {
 
 } T_SESSION; // à voir avec le prof
 
-class CBdd : public QMainWindow
+class CBdd : public QObject
 {
     Q_OBJECT
 
 public:
-    CBdd(QWidget *parent = nullptr);
+    CBdd(QObject *parent = nullptr);
     ~CBdd();
 
-    bool isSessionActive ();
+    bool isSessionActive (QString sessionName);
     void setSessionActive (bool s);
     void setSessionName (QString sessionName);
     void getSession (T_SESSION &data);
-    void setListeEleves (QStringList liste); // Liste des élèves de la clé prof
+    void setListeEleves (QList<QString> liste); // Liste des élèves de la clé prof
     void setCoureurAuDepart (QString name, int ligne, int couloir);
-    void setValeursCoureur (int couloir, int ligne, QString resTemps, QString resVitesse, QString vent);
     bool verifConnection (QString bddLogin, QString bddPass);
 
 private:
-    Ui::CBdd *ui;
 
     QSqlDatabase PMVBdd;
 
-    QString sqlPath = "/Users/natshot/Desktop/Projet_PMV_2022/PMVBdd";
+    QString sqlPath = "/home/pi/Documents/PMVBdd";
     QSqlQuery sqlQuery;
     int index;
     QString name;
@@ -54,9 +46,7 @@ signals:
 
 private slots:
     void on_elevesRcv (QString eleves);
-    void on_resTemps (QString resTemps);
-    void on_resVent (QString resVent);
-    void on_resVitesse (QString resVitesse);
+    void on_valeursCoureur(QString restTemps, QString resVitesse, QString vent, QString id);
 
 };
 #endif // CBDD_H

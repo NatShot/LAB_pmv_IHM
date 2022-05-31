@@ -1,8 +1,11 @@
 #ifndef CZDC_H
 #define CZDC_H
+//#pragma once
 
 #include <QObject>
 #include <QSharedMemory>
+#include "cgererclient.h"
+
 
 typedef enum {
     ETEINT,
