@@ -2,7 +2,7 @@
 #include "cprotocole.h"
 #include "capp.h"
 
-CServeur::CServeur(QObject *parent) : QObject(parent) {
+CServeur::CServeur(CBdd *bdd, QObject *parent) : QObject(parent), _bdd(bdd) {
     _serv.listen(QHostAddress::Any, PORT);
     connect(&_serv, &QTcpServer::newConnection, this, &CServeur::on_newConnection);
     _noPort = PORT;

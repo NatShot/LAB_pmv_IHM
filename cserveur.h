@@ -16,7 +16,7 @@ class CServeur : public QObject
 {
     Q_OBJECT
 public:
-    CServeur(QObject *parent = nullptr);
+    CServeur(CBdd *bdd, QObject *parent = nullptr);
     ~CServeur();
 
 public slots:

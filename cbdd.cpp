@@ -82,5 +82,24 @@ bool CBdd::verifConnection(QString Login, QString Pass) {
         /* Vérification de la présence de la ligne correspondante dans la BDD */
 
     bool isUserFound = sqlQuery.size() == 1;
-        return isUserFound;
+    return isUserFound;
 }
+
+QString CBdd::getSessionName()
+{
+    if(PMVBdd.isOpen())
+    {
+        sqlQuery.prepare("SELECT Nom_Session FROM Session;");
+        sqlQuery.exec();
+
+
+        QString value(sqlQuery.value(0).toString());
+        qDebug() << "Value of getSessionName : " << value;
+
+        return value;
+    }else {
+        qDebug() << "Salope de BDD PAS OUVERTE!!!";
+    }
+
+}
+

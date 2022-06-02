@@ -1,7 +1,7 @@
 #include "cgererclient.h"
 
-CGererClient::CGererClient(QTcpSocket *sock, QObject *parent) :
-    QObject(parent), _sock(sock)
+CGererClient::CGererClient(QTcpSocket *sock, CBdd *bdd, QObject *parent) :
+    QObject(parent), _sock(sock), _bdd(bdd)
 {
     connect(_sock, &QTcpSocket::readyRead, this, &CGererClient::on_readyRead);
 }
@@ -34,14 +34,14 @@ void CGererClient::on_readyRead()
             emit sig_dataClient("", trame);
             // provoquer l'envoi des valeurs de la session en cours.
             // Lire les datas dans la BDD
-//            sessionName = CBdd.
-//            qDebug() << "Nom de la session : " << sessionName;
+            sessionName = _bdd->getSessionName();
+            qDebug() << "Nom de la session : " << sessionName;
             // former la trame d'envoi
-            command = _prot.prepareJsonTransfertAllRunners(nomSession, nomCoureurs);
+            //command = _prot.prepareJsonTransfertAllRunners(nomSession, nomCoureurs);
             // envoyer la trame
-            client->write(command.toStdString().c_str());
-            client->write("\r\n");
-            emit sig_dataClient("", command);
+            //client->write(command.toStdString().c_str());
+            //client->write("\r\n");
+            //emit sig_dataClient("", command);
         } //if
     } // if
 

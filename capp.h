@@ -18,6 +18,8 @@ public:
     CApp();
     ~CApp();
 
+    CBdd *_bdd;
+
 signals:
     void sig_timerStart();
     void sig_timerStop();
@@ -40,7 +42,7 @@ private:
     int _ligne;
 
     CServeur *_serv;
-    CBdd *_bdd;
+
 
     void calculateTime(QDateTime dt2, int ordre);
     void calculateSpeed(int ordre);

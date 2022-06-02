@@ -19,7 +19,9 @@ signals:
     void sig_threadRestart();
 
 private:
-    CGpio *_gpio;
+    CGpio *_gpioRed;
+    CGpio *_gpioGreen;
+    CGpio *_gpioFan;
     CZdc *_zdc;
 };
 
