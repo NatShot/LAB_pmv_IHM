@@ -24,6 +24,7 @@ signals:
     void sig_resTemps(QString resultatTemps, int ordre, int ligne);
     void sig_resVitesse(QString resultatVitesse, int ordre, int ligne);
     void sig_calculateSpeed(QString resultat);
+    void sig_readBdd(QString data);
 
 public slots:
     void on_timerStart();

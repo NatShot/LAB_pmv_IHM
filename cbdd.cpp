@@ -41,7 +41,6 @@ void CBdd::setSessionName(QString sessionName) {
 }
 
 void CBdd::getSession(T_SESSION &data) {
-
 }
 
 void CBdd::setListeEleves(QList<QString> liste) {
