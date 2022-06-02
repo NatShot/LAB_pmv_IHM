@@ -35,11 +35,12 @@ private:
 
     QSqlDatabase PMVBdd;
 
-    QString sqlPath = "/home/pi/Documents/PMVBdd";
+    QString sqlPath = "/home/pi/Documents/PMVBdd.db";
     QSqlQuery sqlQuery;
     int index;
     QString name;
     QString firstname;
+    int exit;
 
 signals:
 //    void sig_authentification (QString txt){}

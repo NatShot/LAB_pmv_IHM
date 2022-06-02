@@ -3,9 +3,8 @@
 using namespace std;
 CBdd::CBdd(QObject *parent): QObject(parent)
 {
-    PMVBdd = QSqlDatabase::addDatabase("QSQLITE");
+    PMVBdd = QSqlDatabase::addDatabase("QSQLITE", "PMVBdd_connect");
     PMVBdd.setDatabaseName(sqlPath);
-
     QSqlQuery sqlQuery(PMVBdd);
 
     if(!PMVBdd.open()) {
@@ -18,6 +17,7 @@ CBdd::CBdd(QObject *parent): QObject(parent)
 
 CBdd::~CBdd()
 {
+    PMVBdd.close();
 }
 
 bool CBdd::isSessionActive(QString sessionName) {
@@ -87,6 +87,7 @@ bool CBdd::verifConnection(QString Login, QString Pass) {
 
 QString CBdd::getSessionName()
 {
+
     if(PMVBdd.isOpen())
     {
         sqlQuery.prepare("SELECT Nom_Session FROM Session;");
@@ -98,7 +99,7 @@ QString CBdd::getSessionName()
 
         return value;
     }else {
-        qDebug() << "Salope de BDD PAS OUVERTE!!!";
+        qDebug() << "BDD PAS OUVERTE!!!";
     }
 
 }
