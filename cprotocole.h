@@ -52,10 +52,11 @@ public:
     ~CProtocole();
 
     // Méthodes pour préparer une trame de protocole
-    QString prepareJsonTransferRunner(int idCourse, QList<int> idRunners); // bi-directionnel
+    QString prepareJsonTransfertRunner(int idCourse, QList<int> idRunners); // bi-directionnel
     QString prepareJsonTimeRun(int idCourse, T_TIMERUN timeRun); // bi-dir
     QString prepareJsonTransfertCsv(int nbCoureurs, T_CSV *csv); // vers la tablette
     QString prepareJsonAuthCheck(bool res=false);  // vers tablette
+    QString prepareJsonTransfertAllRunners(QString sessionName, QList<QString> nomCoureurs);
     QString prepareJsonBtnState(T_BTN_STATE state);
 
     // Méthodes pour parser les trames JSON arrivant du terminal
@@ -79,7 +80,7 @@ private:
     QString filtreAvantParser(QString trame);
 
 signals:
-    void finished();
+    void sig_finished();
 
 private slots:
     void on_resVitesse(QString resVitesse, int ordre, int ligne);

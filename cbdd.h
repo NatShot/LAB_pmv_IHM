@@ -29,6 +29,7 @@ public:
     void setListeEleves (QList<QString> liste); // Liste des élèves de la clé prof
     void setCoureurAuDepart (QString name, int ligne, int couloir);
     bool verifConnection (QString bddLogin, QString bddPass);
+    void getSessionName (QString sessionName);
 
 private:
 

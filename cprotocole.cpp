@@ -11,7 +11,7 @@ CProtocole::~CProtocole()
 
 }
 
-QString CProtocole::prepareJsonTransferRunner(int idCourse, QList<int> idRunners){
+QString CProtocole::prepareJsonTransfertRunner(int idCourse, QList<int> idRunners){
     QString json;
     json = addEnteteJson("transferRunner");
     json += addSectionJson("data");
@@ -22,6 +22,7 @@ QString CProtocole::prepareJsonTransferRunner(int idCourse, QList<int> idRunners
 } //prepareJsonTransferRunner
 
 bool CProtocole::parseJsonTransferAllRunners(int *nbCoureurs, QList<T_COUREUR> *coureurs){
+
     return true;
 }
 
@@ -105,7 +106,23 @@ QString CProtocole::prepareJsonAuthCheck(bool res){
     json += addParamIntJson("success", (res ? '1' : '0'), 4, false);
     json += addPiedJson(2);
     return json;
-} //preapreJsonAuthCheck
+} //prepareJsonAuthCheck
+
+QString CProtocole::prepareJsonTransfertAllRunners(QString sessionName, QList<QString> nomCoureurs)
+{
+    QString json;
+    json = addEnteteJson("transferAllRunners");
+    json += addSectionJson("data");
+    json += addParamTexteJson("sessionName", sessionName, false);
+    json += addParamIntJson("runnersCnt", nomCoureurs.size(), false);
+    for (int i=0 ; i<nomCoureurs.size() ; i++) {
+        json += addSectionJson("runner"+QString::number(i+1),4);
+        json += addParamTexteJson("name", nomCoureurs.at(i), false);
+        json += addFinSectionJson(4, (i<(nomCoureurs.size()-1)?true:false));
+    } // for i
+    json += addPiedJson(2);
+    return json;
+} //prepareJsonTransfertAllRunners
 
 QString CProtocole::prepareJsonBtnState(T_BTN_STATE state){
     QString json;
@@ -118,7 +135,7 @@ QString CProtocole::prepareJsonBtnState(T_BTN_STATE state){
     json += addParamTexteJson("btnGo", QString::number(state.btnGo), 4, false);
     json += addPiedJson(2);
     return json;
-} //preapreJsonBtnState
+} //prepareJsonBtnState
 
 QString CProtocole::addEnteteJson(QString commande, bool suite){
     QString json;
