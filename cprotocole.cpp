@@ -58,12 +58,13 @@ bool CProtocole::parseJsonAuthCheck(QString trame, QString &login, QString &mdp)
 bool CProtocole::parseJsonGetCsv(QString trame){
     // Retourne -1 si incorrect sinon >= 0
     return trame.indexOf("getCsv");
-}
-
-QString CProtocole::parseJsonGetControl()
-{
-
 } //parseJsonGetCsv
+
+bool CProtocole::parseJsonGetControl(QString trame)
+{
+    return trame.indexOf("getControl");
+
+} //parseJsonGetControl
 
 QString CProtocole::prepareJsonTimeRun(int idCourse, T_TIMERUN timeRun){
     QString json;

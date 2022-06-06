@@ -62,7 +62,7 @@ public:
 
     // Méthodes pour parser les trames JSON arrivant du terminal
     bool parseJsonGetCsv(QString trame);  // vers le serveur
-    QString parseJsonGetControl(); // bi dir
+    bool parseJsonGetControl(QString trame); // bi dir
     bool parseJsonTransferAllRunners(int *nbCoureurs, QList<T_COUREUR>*coureurs); // vers serveur
     bool parseJsonBtnState(QString trame, T_BTN_STATE *state); // bi dir
     bool parseJsonTimeRun(int *idCourse, T_TIMERUN *timeRun); // bi-dir

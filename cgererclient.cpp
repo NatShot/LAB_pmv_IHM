@@ -93,7 +93,7 @@ void CGererClient::on_sendJson(QString type, QString param){
     QString trame;
 
     if(type == "getControl"){
-        trame = _prot.parseJsonGetControl();
+        trame = _prot.parseJsonGetControl(trame);
         emettreVersClients(trame);
     } //getControl
 

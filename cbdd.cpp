@@ -72,7 +72,6 @@ QList<QString> CBdd::getListeEleves()
 
     return values;
 
-
 }
 
 void CBdd::setCoureurAuDepart(QString name, int ligne, int couloir) {

@@ -54,6 +54,7 @@ private slots:
     void on_afficherNomsEleves(QStringList nomsEleves);
     void on_exportCsv();
     void on_btnState(char boutons);
+    void on_control();
 
 
 signals:
@@ -62,6 +63,7 @@ signals:
     void sig_coucou();
     void sig_runnersImport(QStringList nomEleves);
     void sig_getControl();
+    void sig_nomSession(QString nomSession);
 
 public slots:
     void on_badPassword();

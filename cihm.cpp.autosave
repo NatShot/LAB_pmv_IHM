@@ -75,6 +75,7 @@ CIhm::CIhm(QWidget *parent)
     //Connects a l'arrache
     connect(this, &CIhm::sig_runnersImport, _app, &CApp::on_runnersImport);
     connect(ui->actionGetControl, &QAction::triggered, _app, &CApp::on_getControl);
+    connect();
     //
 }
 
