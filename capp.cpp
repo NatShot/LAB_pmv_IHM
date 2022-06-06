@@ -8,6 +8,7 @@ CApp::CApp()
 
     _bdd = new CBdd();
     _serv = new CServeur(_bdd);
+    connect(this, &CApp::sig_srvGetControl, _serv, &CServeur::on_srvGetControl);
 }
 
 CApp::~CApp()
@@ -62,6 +63,15 @@ void CApp::calculateTime(QDateTime dt2, int ordre)
     QString resultatTemps = QString::number(_deltaTm) + " : " + QString::number(_deltaTs) +" : " + QString::number(_deltaTms);
     emit sig_resTemps(resultatTemps, ordre, _ligne);
 
+}
+
+void CApp::on_runnersImport(QStringList nomEleves){
+    _bdd->setListeEleves(static_cast<QList<QString>>(nomEleves));
+}
+
+void CApp::on_getControl()
+{
+    emit sig_srvGetControl();
 }
 
 

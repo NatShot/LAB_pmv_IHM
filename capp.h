@@ -27,10 +27,13 @@ signals:
     void sig_resVitesse(QString resultatVitesse, int ordre, int ligne);
     void sig_calculateSpeed(QString resultat);
     void sig_readBdd(QString data);
+    void sig_srvGetControl();
 
 public slots:
     void on_timerStart();
     void on_timerStop(int ordre, QDateTime dt2);
+    void on_runnersImport(QStringList nomEleves);
+    void on_getControl();
 
 private:
     QDateTime _dt1;

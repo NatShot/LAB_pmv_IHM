@@ -20,6 +20,7 @@ public slots:
     void on_erreurReseau(QAbstractSocket::SocketError err);
     void on_readyRead();
     void on_sendJson(QString type, QString param);
+    void on_clientGetControl();
 
 private:
     CProtocole _prot;

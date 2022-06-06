@@ -55,10 +55,13 @@ private slots:
     void on_exportCsv();
     void on_btnState(char boutons);
 
+
 signals:
     void sig_timerStart();
     void sig_workerThread();
     void sig_coucou();
+    void sig_runnersImport(QStringList nomEleves);
+    void sig_getControl();
 
 public slots:
     void on_badPassword();

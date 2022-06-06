@@ -63,11 +63,19 @@ CIhm::CIhm(QWidget *parent)
     ui->pbPartez->setDisabled(true);
     ui->pbStop->setDisabled(true);
     //
+
     //Lancement du Thread
     //connect Thread
     connect(_th, &QThread::finished, _sign, &QObject::deleteLater);
     connect(this, &CIhm::sig_workerThread, _sign, &CSignalisation::on_goTravail);
     _th->start();
+    //
+
+
+    //Connects a l'arrache
+    connect(this, &CIhm::sig_runnersImport, _app, &CApp::on_runnersImport);
+    connect(ui->actionGetControl, &QAction::triggered, _app, &CApp::on_getControl);
+    //
 }
 
 CIhm::~CIhm()
@@ -311,6 +319,7 @@ void CIhm::on_afficherNomsEleves(QStringList _nomsEleves)
         _combos.at(i)->addItems(_nomsEleves);
         _combos.at(i)->update();
     }
+    emit sig_runnersImport(_nomsEleves);
 }
 
 void CIhm::on_exportCsv()
@@ -330,5 +339,4 @@ void CIhm::on_badPassword()
     QMessageBox::critical(this,"ERREUR","Echec de la connexion après 3 tentatives.\nFermeture de l'application.");
     exit(EXIT_FAILURE);
 }
-
 

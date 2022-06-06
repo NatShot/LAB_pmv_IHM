@@ -22,6 +22,7 @@ public:
 public slots:
     void on_printTxt(QString txt);
     void on_disconnectedClient();
+    void on_srvGetControl();
 
 private:
     QTcpServer _serv;
@@ -36,6 +37,7 @@ signals:
     void sig_erreur(QAbstractSocket::SocketError err);
     void sig_adrClient(QString adrClient);
     void sig_maJClients(QList<QTcpSocket *> liste);
+    void sig_clientGetControl();
 
 private slots:
     void on_printError(QString err);

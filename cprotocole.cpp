@@ -111,7 +111,7 @@ QString CProtocole::prepareJsonAuthCheck(bool res){
 QString CProtocole::prepareJsonTransfertAllRunners(QString sessionName, QList<QString> nomCoureurs)
 {
     QString json;
-    json = addEnteteJson("transferAllRunners");
+    json = addEnteteJson("transfertAllRunners");
     json += addSectionJson("data");
     json += addParamTexteJson("sessionName", sessionName, false);
     json += addParamIntJson("runnersCnt", nomCoureurs.size(), false);
@@ -136,6 +136,14 @@ QString CProtocole::prepareJsonBtnState(T_BTN_STATE state){
     json += addPiedJson(2);
     return json;
 } //prepareJsonBtnState
+
+QString CProtocole::prepareJsonGetControl()
+{
+    QString json;
+    json = addEnteteJson("getControl", false);
+    json += addPiedJson(0);
+    return json;
+} //prepareJsonGetControl
 
 QString CProtocole::addEnteteJson(QString commande, bool suite){
     QString json;

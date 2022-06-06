@@ -1238,8 +1238,15 @@
     <addaction name="actionImport_CSV"/>
     <addaction name="actionExportCSV"/>
    </widget>
+   <widget class="QMenu" name="menuGetControl">
+    <property name="title">
+     <string>GetControl</string>
+    </property>
+    <addaction name="actionGetControl"/>
+   </widget>
    <addaction name="menuSyst_me"/>
    <addaction name="menuCSV"/>
+   <addaction name="menuGetControl"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionRedemarrage">
@@ -1275,6 +1282,11 @@
   <action name="actionExportCSV">
    <property name="text">
     <string>Export CSV</string>
+   </property>
+  </action>
+  <action name="actionGetControl">
+   <property name="text">
+    <string>GetControl</string>
    </property>
   </action>
  </widget>
