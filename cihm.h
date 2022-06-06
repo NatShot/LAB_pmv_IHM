@@ -54,11 +54,14 @@ private slots:
     void on_afficherNomsEleves(QStringList nomsEleves);
     void on_exportCsv();
     void on_btnState(char boutons);
+    void on_control();
 
 signals:
     void sig_timerStart();
     void sig_workerThread();
     void sig_coucou();
+    void sig_getControl();
+    void sig_nomSession(QString nom);
 
 public slots:
     void on_badPassword();

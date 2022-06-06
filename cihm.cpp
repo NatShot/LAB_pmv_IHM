@@ -172,7 +172,11 @@ void CIhm::on_pbStart_clicked()
             ui->pbStart->setText("STOP");
             ui->pbPreparation->setEnabled(true);
             ui->leNomSession->setReadOnly(true);
-            //Start la session;
+
+            QString nomSession;
+            ui->leNomSession->setText(nomSession);
+            emit sig_nomSession(nomSession);//Il faut le connect au serveur ( envoie nomSesison )
+
         }
      }//IF START
 
@@ -224,6 +228,7 @@ void CIhm::on_btnState(char boutons)
         break;
     }
 }
+
             //----BOUTONS----//
 
                         //
@@ -322,7 +327,31 @@ void CIhm::on_exportCsv()
 
             //----AFFICHAGE IHM----//
 
+void CIhm::on_control() //Il faut le connect au serveur
+{
+    ui->tableWidget->setDisabled(true);
+    ui->pbAvm->setDisabled(true);
+    ui->pbPreparation->setDisabled(true);
+    ui->pbPret->setDisabled(true);
+    ui->pbPartez->setDisabled(true);
 
+    QMessageBox msgBox;
+    msgBox.setText("Voulez-vous reprendre le controle?");
+    msgBox.setStandardButtons(QMessageBox::Yes);
+    msgBox.setDefaultButton(QMessageBox::Yes);
+    int reponse = msgBox.exec();
+    if(reponse == QMessageBox::Yes)
+    {
+        ui->tableWidget->setDisabled(false);
+        ui->pbAvm->setDisabled(false);
+        ui->pbPreparation->setDisabled(false);
+        ui->pbPret->setDisabled(false);
+        ui->pbPartez->setDisabled(false);
+        emit sig_getControl(); //Il faut le connect au serveur
+    }
+
+
+}
 
 
 void CIhm::on_badPassword()
