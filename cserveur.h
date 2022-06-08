@@ -8,19 +8,21 @@
 
 #include "cgererclient.h"
 #include "czdc.h"
+#include "cbdd.h"
 
 #define PORT 2314
 
-class CServeur : public QTcpServer
+class CServeur : public QObject
 {
     Q_OBJECT
 public:
-    CServeur(QObject *parent = nullptr);
+    CServeur(CBdd *bdd, QObject *parent = nullptr);
     ~CServeur();
 
 public slots:
-    void onPrintTxt(QString txt);
+    void on_printTxt(QString txt);
     void on_disconnectedClient();
+    void on_srvGetControl();
 
 private:
     QTcpServer _serv;
@@ -28,17 +30,17 @@ private:
     CGererClient *_client;
     quint16 _noPort;
     QString cgererclient;
-    int init();
-
+    CBdd *_bdd;
 
 signals:
     void sig_evenementServeur(QString eve);
     void sig_erreur(QAbstractSocket::SocketError err);
     void sig_adrClient(QString adrClient);
     void sig_maJClients(QList<QTcpSocket *> liste);
+    void sig_clientGetControl();
 
 private slots:
-    void onPrintError(QString err);
+    void on_printError(QString err);
     void on_newConnection();
 
 };

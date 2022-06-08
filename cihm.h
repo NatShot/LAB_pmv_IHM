@@ -55,13 +55,23 @@ private slots:
     void on_exportCsv();
     void on_btnState(char boutons);
     void on_control();
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6a900ddc3065a441487941b5df5b37ed8aef9a16
 
 signals:
     void sig_timerStart();
     void sig_workerThread();
     void sig_coucou();
+<<<<<<< HEAD
     void sig_getControl();
     void sig_nomSession(QString nom);
+=======
+    void sig_runnersImport(QStringList nomEleves);
+    void sig_getControl();
+    void sig_nomSession(QString nomSession);
+>>>>>>> 6a900ddc3065a441487941b5df5b37ed8aef9a16
 
 public slots:
     void on_badPassword();

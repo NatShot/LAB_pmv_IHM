@@ -1,20 +1,22 @@
 #include "cgererclient.h"
 
-CGererClient::CGererClient(QTcpSocket *sock, QObject *parent) :
-    QObject(parent), _sock(sock)
+CGererClient::CGererClient(QTcpSocket *sock, CBdd *bdd, QObject *parent) :
+    QObject(parent), _sock(sock), _bdd(bdd)
 {
-    connect(_sock, &QTcpSocket::readyRead, this, &CGererClient::onReadyRead);
+    connect(_sock, &QTcpSocket::readyRead, this, &CGererClient::on_readyRead);
 }
 
 CGererClient::~CGererClient(){
 
 }
 
-void CGererClient::onReadyRead()
+void CGererClient::on_readyRead()
 {
+    QList<QString> nomCoureurs;
+    QString nomSession;
     QByteArray ba;
     QString trame, command;
-    QTcpSocket *client = (QTcpSocket *)sender();
+    QTcpSocket *client = static_cast<QTcpSocket*>(sender());
 
     ba = client->readAll();
 
@@ -29,7 +31,22 @@ void CGererClient::onReadyRead()
             trame = _prot.prepareJsonAuthCheck(true);
             client->write(trame.toStdString().c_str());
             client->write("\r\n");
+            client->flush();
             emit sig_dataClient("", trame);
+            // provoquer l'envoi des valeurs de la session en cours.
+            // Lire les datas dans la BDD
+            sessionName = _bdd->getSessionName();
+            qDebug() << "Nom de la session : " << sessionName;
+            nomCoureurs = _bdd->getListeEleves();
+            qDebug() << "Nombre de lignes : " << nomCoureurs;
+            // former la trame d'envoi
+            command = _prot.prepareJsonTransfertAllRunners(sessionName, nomCoureurs);
+            // envoyer la trame
+            qDebug() << "TransfertAllRunners : " << command;
+            client->write(command.toStdString().c_str());
+            client->write("\r\n");
+            client->flush();
+            emit sig_dataClient("", command);
         } //if
     } // if
 
@@ -70,14 +87,13 @@ void CGererClient::onReadyRead()
 
     qDebug() << "Client : " << client << ba;
     emit sig_dataClient(client->peerAddress().toString(), QString(ba));
-    _sock->close();
 }
 
 void CGererClient::on_sendJson(QString type, QString param){
     QString trame;
 
     if(type == "getControl"){
-        trame = _prot.parseJsonGetControl();
+        trame = _prot.parseJsonGetControl(trame);
         emettreVersClients(trame);
     } //getControl
 
@@ -91,6 +107,13 @@ void CGererClient::on_sendJson(QString type, QString param){
         trame = _prot.prepareJsonBtnState(state);
         emettreVersClients(trame);
     } //btnState
+}
+
+void CGererClient::on_clientGetControl()
+{
+    QString trame;
+    trame = _prot.prepareJsonGetControl();
+    emettreVersClients(trame);
 } //onSendJson
 
 int CGererClient::emettreVersClients(QString mess){

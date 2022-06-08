@@ -1,12 +1,12 @@
 #include "cserveur.h"
 #include "cprotocole.h"
+#include "capp.h"
 
-CServeur::CServeur(QObject *parent): QTcpServer(parent){
+CServeur::CServeur(CBdd *bdd, QObject *parent) : QObject(parent), _bdd(bdd) {
     _serv.listen(QHostAddress::Any, PORT);
     connect(&_serv, &QTcpServer::newConnection, this, &CServeur::on_newConnection);
     _noPort = PORT;
-
-    init();
+    _sock = nullptr;
 }
 
 CServeur::~CServeur()
@@ -14,12 +14,12 @@ CServeur::~CServeur()
 
 }
 
-void CServeur::onPrintTxt(QString txt)
+void CServeur::on_printTxt(QString txt)
 {
 
 }
 
-void CServeur::onPrintError(QString txt){
+void CServeur::on_printError(QString txt){
 
 }
 
@@ -27,17 +27,18 @@ void CServeur::onPrintError(QString txt){
 void CServeur::on_newConnection(){
     QString mess = "Un client vient de se connecter";
     qDebug() << mess;
-    _sock = new QTcpSocket(this->nextPendingConnection());
+    _sock = _serv.nextPendingConnection();
 //    qDebug() << "local Adress" << sock->localAddress().toString();
-    _client = new CGererClient(_sock);
+    _client = new CGererClient(_sock, _bdd);
     qDebug() << "Nouvelle connexion : " << _sock;
 
-    if (_sock == nullptr)
-        emit sig_erreur(QAbstractSocket::ConnectionRefusedError);
+    //if (_sock == nullptr)
+    //    emit sig_erreur(QAbstractSocket::ConnectionRefusedError);
 
-    connect(_sock, &QTcpSocket::readyRead, _client, &CGererClient::onReadyRead);
-    //connect(newClient, &QAbstractSocket::disconnected, this, &CServeurTcp::deleteLater);
+    connect(_sock, &QTcpSocket::readyRead, _client, &CGererClient::on_readyRead);
+    connect(_sock, &QAbstractSocket::disconnected, this, &CServeur::deleteLater);
     connect(_sock, &QAbstractSocket::disconnected, this, &CServeur::on_disconnectedClient);
+    connect(this, &CServeur::sig_clientGetControl, _client, &CGererClient::on_clientGetControl);
     connect(_sock, QOverload<QAbstractSocket::SocketError>::of(&QAbstractSocket::error),
               [=](QAbstractSocket::SocketError err)
         {
@@ -123,14 +124,15 @@ void CServeur::on_newConnection(){
 
 void CServeur::on_disconnectedClient()
 {
-    QTcpSocket *client = (QTcpSocket *)sender(); // Déterminer quel client ?
+    //QTcpSocket *client = static_cast<QTcpSocket*>(sender()); // Déterminer quel client ?
     //delete client;
+    _sock = nullptr;
+    delete _client;
     emit sig_evenementServeur("Déconnexion du client");
 }
 
-int CServeur::init()
+void CServeur::on_srvGetControl()
 {
-    listen(QHostAddress::Any, _noPort);
-    connect(this, &CServeur::newConnection, this, &CServeur::on_newConnection);
-    return 1;
+    emit sig_clientGetControl();
 }
+

@@ -24,28 +24,34 @@ public:
 
     bool isSessionActive (QString sessionName);
     void setSessionActive (bool s);
+
     void setSessionName (QString sessionName);
+    QString getSessionName ();
+
     void getSession (T_SESSION &data);
+
     void setListeEleves (QList<QString> liste); // Liste des élèves de la clé prof
-    void setCoureurAuDepart (QString name, int ligne, int couloir);
+    QList<QString> getListeEleves();
+
+    void setCoureurAuDepart (QString _name, int ligne, int couloir);
     bool verifConnection (QString bddLogin, QString bddPass);
 
 private:
 
     QSqlDatabase PMVBdd;
 
-    QString sqlPath = "/home/pi/Documents/PMVBdd";
-    QSqlQuery sqlQuery;
-    int index;
-    QString name;
-    QString firstname;
+    QString _sqlPath;
+    QSqlQuery *_sqlQuery;
+    int _index;
+    QString _name;
+    QString _firstname;
+    int _exit;
 
 signals:
 //    void sig_authentification (QString txt){}
     void sig_connectionOK (bool connectionOK);
 
 private slots:
-    void on_elevesRcv (QString eleves);
     void on_valeursCoureur(QString restTemps, QString resVitesse, QString vent, QString id);
 
 };
