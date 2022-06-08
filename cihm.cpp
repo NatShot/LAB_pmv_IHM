@@ -5,15 +5,16 @@ CIhm::CIhm(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::CIhm)
 {
-    //loginDialog
+    /* Lancement de la boite d'authentification */
     _loginDialog = new CLoginDialog();
     connect(_loginDialog,&CLoginDialog::sig_badPassword,this,&CIhm::on_badPassword);
     _loginDialog->exec();
-    //
 
+
+    /* Lancement de l'interface principale */
     ui->setupUi(this);
 
-    //Tableau de valeurs (en responsive)+ ComboBox des coureurs après import CSV
+    /* Tableau de valeurs (en responsive)+ ComboBox des coureurs après import CSV */
     ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
@@ -29,53 +30,39 @@ CIhm::CIhm(QWidget *parent)
         }
     }
 
-    //Instanciation des objets
+
+    /* Instanciation des objets */
     _zdc = new CZdc();
     _app = new CApp();
     _csv = new CCsv();
-    _th = new QThread();
-    _sign = new CSignalisation();
-    _sign->moveToThread(_th);
-    //
 
-    //emit sig_workerThread();
-    //
-
-    //Démarrage de la course
+    /* Démarrage de la course */
     connect(this,&CIhm::sig_timerStart,_app, &CApp::on_timerStart);
-    //
 
-    //Execution commandes système
+    /* Execution commandes système */
     connect(ui->actionRedemarrage,&QAction::triggered,this,&CIhm::on_reboot);
     connect(ui->actionArreter, &QAction::triggered, this, &CIhm::on_shutdown);
     connect(ui->actionQuitter, &QAction::triggered, this, &CIhm::on_quitterApp);
-    //
 
-    //Execution des commandes CSV
+
+    /* Execution des commandes CSV */
     connect(ui->actionImport_CSV,&QAction::triggered,_csv, &CCsv::on_QFileDialog4Path);
     connect(_csv, &CCsv::sig_afficherNomsEleves, this, &CIhm::on_afficherNomsEleves);
     connect(ui->actionExportCSV, &QAction::triggered, this, &CIhm::on_exportCsv);
 
-    //Boutons au démarrage
+    /* Etat des boutons au démarrage */
     ui->pbPreparation->setDisabled(true);
     ui->pbAvm->setDisabled(true);
     ui->pbPret->setDisabled(true);
     ui->pbPartez->setDisabled(true);
     ui->pbStop->setDisabled(true);
-    //
 
-    //Lancement du Thread
-    //connect Thread
-    connect(_th, &QThread::finished, _sign, &QObject::deleteLater);
-    connect(this, &CIhm::sig_workerThread, _sign, &CSignalisation::on_goTravail);
-    _th->start();
-    //
-
-
-    //Connects a l'arrache
+    /* Connects a l'arrache */
     connect(this, &CIhm::sig_runnersImport, _app, &CApp::on_runnersImport);
     connect(ui->actionGetControl, &QAction::triggered, _app, &CApp::on_getControl);
-    //
+    connect(_app, &CApp::sig_appRemoteGetControl, this, &CIhm::on_appRemoteGetControl);
+    connect(this, &CIhm::sig_toWorkerThread, _app, &CApp::on_workerThread); // Passerelle de démarrage du Thread
+
 }
 
 CIhm::~CIhm()
@@ -84,9 +71,6 @@ CIhm::~CIhm()
         delete _combos.at(i);
     }
     _combos.clear();
-    delete _sign;
-    _th->quit();
-    _th->wait();
     delete _csv;
     delete _app;
     delete _loginDialog;
@@ -94,7 +78,11 @@ CIhm::~CIhm()
     delete ui;
 }
 
-            //----BOUTONS----//
+
+        /* ------------------------- */
+        /*          BOUTONS          */
+        /* ------------------------- */
+
 void CIhm::on_pbPreparation_clicked()
 {
     T_DATAS datas;
@@ -103,7 +91,7 @@ void CIhm::on_pbPreparation_clicked()
     _zdc->sauveDatas(datas);
 
     ui->pbAvm->setEnabled(true);
-    emit sig_workerThread();
+    emit sig_toWorkerThread();
 }
 
 
@@ -342,7 +330,7 @@ void CIhm::on_badPassword()
     exit(EXIT_FAILURE);
 }
 
-void CIhm::on_control() //Il faut le connect au serveur
+void CIhm::on_appRemoteGetControl() //Il faut le connect au serveur
 {
     ui->tableWidget->setDisabled(true);
     ui->pbAvm->setDisabled(true);
@@ -362,7 +350,7 @@ void CIhm::on_control() //Il faut le connect au serveur
         ui->pbPreparation->setDisabled(false);
         ui->pbPret->setDisabled(false);
         ui->pbPartez->setDisabled(false);
-        emit sig_getControl(); //Il faut le connect au serveur
+        ui->actionGetControl->trigger(); //Il faut le connect au serveur
     }
 
 }

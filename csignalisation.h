@@ -22,6 +22,7 @@ private:
     CGpio *_gpioRed;
     CGpio *_gpioGreen;
     CGpio *_gpioFan;
+    CGpio *_gpioBuzzer;
     CZdc *_zdc;
 };
 

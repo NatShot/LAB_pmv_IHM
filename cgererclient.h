@@ -31,6 +31,7 @@ private:
 
 signals:
     void sig_dataClient(QString adrIpClient, QString data);
+    void sig_remoteGetControl();
 
 };
 

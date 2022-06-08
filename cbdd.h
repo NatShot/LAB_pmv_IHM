@@ -46,6 +46,7 @@ private:
     QString _name;
     QString _firstname;
     int _exit;
+    void clearElevesList();
 
 signals:
 //    void sig_authentification (QString txt){}

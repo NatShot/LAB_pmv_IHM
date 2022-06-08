@@ -38,6 +38,7 @@ void CServeur::on_newConnection(){
     connect(_sock, &QTcpSocket::readyRead, _client, &CGererClient::on_readyRead);
     connect(_sock, &QAbstractSocket::disconnected, this, &CServeur::deleteLater);
     connect(_sock, &QAbstractSocket::disconnected, this, &CServeur::on_disconnectedClient);
+    connect(_client, &CGererClient::sig_remoteGetControl, this, &CServeur::on_remoteGetControl);
     connect(this, &CServeur::sig_clientGetControl, _client, &CGererClient::on_clientGetControl);
     connect(_sock, QOverload<QAbstractSocket::SocketError>::of(&QAbstractSocket::error),
               [=](QAbstractSocket::SocketError err)
@@ -134,5 +135,10 @@ void CServeur::on_disconnectedClient()
 void CServeur::on_srvGetControl()
 {
     emit sig_clientGetControl();
+}
+
+void CServeur::on_remoteGetControl()
+{
+    emit sig_srvRemoteGetControl();
 }
 

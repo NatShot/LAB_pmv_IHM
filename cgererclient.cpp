@@ -75,7 +75,8 @@ void CGererClient::on_readyRead()
     } //if
 
     if(command == "getControl"){
-        emit sig_dataClient(client->peerAddress().toString(), "Reprise de contrôle par la tablette.");
+        emit sig_dataClient(client->peerAddress().toString(),"Reprise de contrôle par la tablette.");
+        emit sig_remoteGetControl();
     }
 
     if(command == "btnState"){

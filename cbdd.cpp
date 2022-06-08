@@ -44,20 +44,33 @@ void CBdd::getSession(T_SESSION &data) {
 
 void CBdd::setListeEleves(QList<QString> liste) {
 
+    clearElevesList();
     qDebug() << "liste Eleves : " << liste;
-    for(int i = 0; i < liste.count(); i++){
-        _name = liste.at(i).split(" ").at(0);
-        _firstname = liste.at(i).split(" ").at(1);
-        _sqlQuery->prepare("UPDATE Eleves SET Nom = :Nom, Prenom = :Prenom WHERE ID_Eleves=:id;");
+    for(int i = 0; i < liste.size(); i++){ // Récupération du nombre de lignes dans la liste (NOM + Prénom sur une seule ligne)
+        _name = liste.at(i).split(" ").at(0); // Découpage et séparation du NOM
+        _firstname = liste.at(i).split(" ").at(1); // Découpage et séparation du PRÉNOM
+
+        _sqlQuery->prepare("INSERT OR REPLACE INTO Eleves (ID_Eleves, Nom, Prenom) VALUES (:id, :Nom, :Prenom);");
+
         _sqlQuery->bindValue(":id", i+1);
+        //qDebug() << "ID = " << i+1;
+
         _sqlQuery->bindValue(":Nom", _name);
-        _sqlQuery->bindValue(":Prenom", QString(_firstname.left(1) + "."));
+        //qDebug() << "Nom = " << _name;
+
+        _sqlQuery->bindValue(":Prenom", _firstname);
+        //qDebug() << "Prénom = " << _firstname;
+
         _sqlQuery->exec();
+        //qDebug() << "sqlQuery : " << _sqlQuery->executedQuery();
     }
 }
 
 QList<QString> CBdd::getListeEleves()
 {
+    /* Déclaration de la variable tampon */
+    QList<QString> values;
+
     /* Récupération de la liste des Eleves */
 
     _sqlQuery->prepare("SELECT Nom, Prenom FROM Eleves;");
@@ -65,10 +78,9 @@ QList<QString> CBdd::getListeEleves()
 
     /* Récupération du nombre de lignes */
 
-    QString lines(_sqlQuery->size());
-
-    QList<QString> values;
-    values.append(lines);
+    for(int i = 0; i < _sqlQuery->size(); i++){
+        values.append(_sqlQuery->value(i).toString());
+    }
 
     return values;
 
@@ -121,5 +133,11 @@ QString CBdd::getSessionName()
         qDebug() << "BDD PAS OUVERTE!!!";
     }
 
+}
+
+void CBdd::clearElevesList()
+{
+    _sqlQuery->prepare("DELETE FROM Eleves;");
+    _sqlQuery->exec();
 }
 

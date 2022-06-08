@@ -142,7 +142,7 @@ QString CProtocole::prepareJsonGetControl()
 {
     QString json;
     json = addEnteteJson("getControl", false);
-    json += addPiedJson(0);
+    json += addPiedJson(1);
     return json;
 } //prepareJsonGetControl
 
@@ -156,9 +156,11 @@ QString CProtocole::addEnteteJson(QString commande, bool suite){
 
 QString CProtocole::addPiedJson(int nb){
     QString json;
-    if(nb == 2)
-        json.append("}");
-    json.append("}");
+    if(nb > 0){
+        for(int i = 0; i < nb; i++){
+            json.append("}");
+        }
+    }
     return json;
 } //addPiedJson
 

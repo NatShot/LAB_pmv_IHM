@@ -54,19 +54,19 @@ private slots:
     void on_afficherNomsEleves(QStringList nomsEleves);
     void on_exportCsv();
     void on_btnState(char boutons);
-    void on_control();
 
 
 signals:
     void sig_timerStart();
-    void sig_workerThread();
     void sig_coucou();
     void sig_runnersImport(QStringList nomEleves);
     void sig_getControl();
     void sig_nomSession(QString nomSession);
+    void sig_toWorkerThread();
 
 public slots:
     void on_badPassword();
+    void on_appRemoteGetControl();
 
 private:
     Ui::CIhm *ui;
@@ -84,8 +84,6 @@ private:
     QStringList _vitesse;
     QStringList _vent;
     QList<QString> ListTpm;
-    QThread *_th;
-    CSignalisation *_sign;
     int _security = 0;
 };
 #endif // CIHM_H

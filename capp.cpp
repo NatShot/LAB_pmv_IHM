@@ -2,19 +2,44 @@
 
 CApp::CApp()
 {
+    /* Initialisation des capteurs de passage */
     _capteurPassage1 = new CCapteurPassage(nullptr, 17, 1);
     _capteurPassage2 = new CCapteurPassage(nullptr, 27, 2);
-    _ligne = -1;
 
+    /* Initialisation des objets de communications
+     * avec la tablette */
     _bdd = new CBdd();
     _serv = new CServeur(_bdd);
+
+    /* Initialisation de la signalisation */
+    _th = new QThread();
+    _sign = new CSignalisation();
+    _sign->moveToThread(_th);
+
+    /* Connexion des signaux de contrôle de la tablette */
     connect(this, &CApp::sig_srvGetControl, _serv, &CServeur::on_srvGetControl);
+    connect(_serv, &CServeur::sig_srvRemoteGetControl, this, &CApp::on_srvRemoteGetControl);
+
+    /* Connexion et lancement des signaux du thread */
+    connect(_th, &QThread::finished, _sign, &QObject::deleteLater);
+    connect(this, &CApp::sig_workerThread, _sign, &CSignalisation::on_goTravail);
+    _th->start();
+
+
+    /* Initialisation de la variable de numérotation de course */
+    _ligne = -1;
+
 }
 
 CApp::~CApp()
 {
-    delete _capteurPassage1;
+    delete _sign;
+    _th->quit();
+    _th->wait();
+    delete _serv;
+    delete _bdd;
     delete _capteurPassage2;
+    delete _capteurPassage1;
 }
 
 
@@ -74,4 +99,12 @@ void CApp::on_getControl()
     emit sig_srvGetControl();
 }
 
+void CApp::on_srvRemoteGetControl()
+{
+    emit sig_appRemoteGetControl();
+}
+
+void CApp::on_workerThread(){
+    emit sig_workerThread();
+}
 
