@@ -10,6 +10,8 @@
 #include "cserveur.h"
 #include "canemometre.h"
 #include "cbdd.h"
+#include <QThread>
+#include <csignalisation.h>
 
 class CApp : public QObject
 {
@@ -28,12 +30,14 @@ signals:
     void sig_calculateSpeed(QString resultat);
     void sig_readBdd(QString data);
     void sig_srvGetControl();
+    void sig_workerThread();
 
 public slots:
     void on_timerStart();
     void on_timerStop(int ordre, QDateTime dt2);
     void on_runnersImport(QStringList nomEleves);
     void on_getControl();
+    void on_workerThread();
 
 private:
     QDateTime _dt1;
@@ -44,6 +48,8 @@ private:
     CCapteurPassage *_capteurPassage2;
     int _ligne;
 
+    QThread *_th;
+    CSignalisation *_sign;
     CServeur *_serv;
 
 

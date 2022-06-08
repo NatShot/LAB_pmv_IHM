@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<<<<<<< HEAD
-<!-- Written by QtCreator 5.0.3, 2022-06-02T18:05:51. -->
-=======
-<!-- Written by QtCreator 4.8.2, 2022-06-06T18:08:27. -->
->>>>>>> 6a900ddc3065a441487941b5df5b37ed8aef9a16
+<!-- Written by QtCreator 5.0.3, 2022-06-08T13:21:52. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -239,28 +235,14 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-<<<<<<< HEAD
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/Users/juliensoler/Desktop/LAB_pmv_IHM/PMV.pro</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/juliensoler/Desktop/LAB_pmv_IHM/PMV.pro</value>
-=======
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">PMV</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/pi/Desktop/LAB_DEV/PMV.pro</value>
-    <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.ProFile">PMV.pro</value>
-    <value type="QString" key="RunConfiguration.Arguments"></value>
-    <value type="uint" key="RunConfiguration.QmlDebugServerPort">3768</value>
->>>>>>> 6a900ddc3065a441487941b5df5b37ed8aef9a16
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-<<<<<<< HEAD
     <value type="QString" key="RunConfiguration.WorkingDirectory.default">/Users/juliensoler/Desktop/build-PMV-Desktop_x86_darwin_generic_mach_o_64bit-Debug/PMV.app/Contents/MacOS</value>
-=======
-    <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
->>>>>>> 6a900ddc3065a441487941b5df5b37ed8aef9a16
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
   </valuemap>

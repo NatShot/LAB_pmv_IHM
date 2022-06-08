@@ -33,13 +33,9 @@ CIhm::CIhm(QWidget *parent)
     _zdc = new CZdc();
     _app = new CApp();
     _csv = new CCsv();
-    _th = new QThread();
-    _sign = new CSignalisation();
-    _sign->moveToThread(_th);
     //
 
-    //emit sig_workerThread();
-    //
+
 
     //Démarrage de la course
     connect(this,&CIhm::sig_timerStart,_app, &CApp::on_timerStart);
@@ -64,17 +60,11 @@ CIhm::CIhm(QWidget *parent)
     ui->pbStop->setDisabled(true);
     //
 
-    //Lancement du Thread
-    //connect Thread
-    connect(_th, &QThread::finished, _sign, &QObject::deleteLater);
-    connect(this, &CIhm::sig_workerThread, _sign, &CSignalisation::on_goTravail);
-    _th->start();
-    //
-
 
     //Connects a l'arrache
     connect(this, &CIhm::sig_runnersImport, _app, &CApp::on_runnersImport);
     connect(ui->actionGetControl, &QAction::triggered, _app, &CApp::on_getControl);
+    connect(this, &CIhm::sig_toWorkerThread, _app, &CApp::on_workerThread);//Passerelle démarage du Thread
     //
 }
 
@@ -84,9 +74,6 @@ CIhm::~CIhm()
         delete _combos.at(i);
     }
     _combos.clear();
-    delete _sign;
-    _th->quit();
-    _th->wait();
     delete _csv;
     delete _app;
     delete _loginDialog;
@@ -103,7 +90,7 @@ void CIhm::on_pbPreparation_clicked()
     _zdc->sauveDatas(datas);
 
     ui->pbAvm->setEnabled(true);
-    emit sig_workerThread();
+    emit sig_toWorkerThread();
 }
 
 
@@ -168,7 +155,6 @@ void CIhm::on_pbStart_clicked()
 {
     if(ui->pbStart->text()=="START")
         {
-<<<<<<< HEAD
             ui->pbStart->setText("STOP");
             ui->pbPreparation->setEnabled(true);
             ui->leNomSession->setReadOnly(true);
@@ -177,9 +163,7 @@ void CIhm::on_pbStart_clicked()
             ui->leNomSession->setText(nomSession);
             emit sig_nomSession(nomSession);//Il faut le connect au serveur ( envoie nomSesison )
 
-        }
-     }//IF START
-=======
+
             QMessageBox msgBox;
             msgBox.setText("Voulez-vous lancer une nouvelle session?");
             msgBox.setInformativeText("Le nom de la session ne pourra plus être modifié");
@@ -199,7 +183,7 @@ void CIhm::on_pbStart_clicked()
 
             }
          }
->>>>>>> 6a900ddc3065a441487941b5df5b37ed8aef9a16
+
 
     else
     {
@@ -357,7 +341,6 @@ void CIhm::on_control() //Il faut le connect au serveur
     ui->pbPret->setDisabled(true);
     ui->pbPartez->setDisabled(true);
 
-<<<<<<< HEAD
     QMessageBox msgBox;
     msgBox.setText("Voulez-vous reprendre le controle?");
     msgBox.setStandardButtons(QMessageBox::Yes);
@@ -377,36 +360,11 @@ void CIhm::on_control() //Il faut le connect au serveur
 }
 
 
-=======
->>>>>>> 6a900ddc3065a441487941b5df5b37ed8aef9a16
+
 void CIhm::on_badPassword()
 {
     QMessageBox::critical(this,"ERREUR","Echec de la connexion après 3 tentatives.\nFermeture de l'application.");
     exit(EXIT_FAILURE);
 }
 
-void CIhm::on_control() //Il faut le connect au serveur
-{
-    ui->tableWidget->setDisabled(true);
-    ui->pbAvm->setDisabled(true);
-    ui->pbPreparation->setDisabled(true);
-    ui->pbPret->setDisabled(true);
-    ui->pbPartez->setDisabled(true);
-
-    QMessageBox msgBox;
-    msgBox.setText("Voulez-vous reprendre le controle?");
-    msgBox.setStandardButtons(QMessageBox::Yes);
-    msgBox.setDefaultButton(QMessageBox::Yes);
-    int reponse = msgBox.exec();
-    if(reponse == QMessageBox::Yes)
-    {
-        ui->tableWidget->setDisabled(false);
-        ui->pbAvm->setDisabled(false);
-        ui->pbPreparation->setDisabled(false);
-        ui->pbPret->setDisabled(false);
-        ui->pbPartez->setDisabled(false);
-        emit sig_getControl(); //Il faut le connect au serveur
-    }
-
-}
 

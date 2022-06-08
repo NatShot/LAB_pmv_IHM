@@ -1,5 +1,6 @@
 #include "capp.h"
 
+
 CApp::CApp()
 {
     _capteurPassage1 = new CCapteurPassage(nullptr, 17, 1);
@@ -8,11 +9,26 @@ CApp::CApp()
 
     _bdd = new CBdd();
     _serv = new CServeur(_bdd);
+    _th = new QThread();
+    _sign = new CSignalisation();
+    _sign->moveToThread(_th);
     connect(this, &CApp::sig_srvGetControl, _serv, &CServeur::on_srvGetControl);
+
+    //Lancement du Thread
+    //connect Thread
+    connect(_th, &QThread::finished, _sign, &QObject::deleteLater);
+    connect(this, &CApp::sig_workerThread, _sign, &CSignalisation::on_goTravail);
+    _th->start();
+    //
 }
 
 CApp::~CApp()
 {
+    delete _sign;
+    _th->quit();
+    _th->wait();
+    delete _serv;
+    delete _bdd;
     delete _capteurPassage1;
     delete _capteurPassage2;
 }
@@ -74,4 +90,6 @@ void CApp::on_getControl()
     emit sig_srvGetControl();
 }
 
-
+void CApp::on_workerThread(){
+    emit sig_workerThread();
+}
