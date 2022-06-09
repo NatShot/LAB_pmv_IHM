@@ -100,6 +100,11 @@ void CBdd::on_valeursCoureur(QString resTemps, QString resVitesse, QString id, Q
     _sqlQuery->exec();
 }
 
+void CBdd::on_checkCredentials(QString login, QString pass)
+{
+
+}
+
 bool CBdd::verifConnection(QString Login, QString Pass) {
 
         /* Récupération du nombre de lignbe correspondant dans la BDD */

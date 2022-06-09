@@ -51,9 +51,13 @@ private:
 signals:
 //    void sig_authentification (QString txt){}
     void sig_connectionOK (bool connectionOK);
+    void sig_credentials(bool state);
 
 private slots:
     void on_valeursCoureur(QString restTemps, QString resVitesse, QString vent, QString id);
+
+public slots:
+    void on_checkCredentials(QString login, QString pass);
 
 };
 #endif // CBDD_H

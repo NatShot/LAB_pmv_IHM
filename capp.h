@@ -32,6 +32,8 @@ signals:
     void sig_srvGetControl();
     void sig_appRemoteGetControl();
     void sig_workerThread();
+    void sig_checkCredentials(QString login, QString pass);
+    void sig_credentials(bool state);
 
 public slots:
     void on_timerStart();
@@ -40,6 +42,8 @@ public slots:
     void on_getControl();
     void on_srvRemoteGetControl();
     void on_workerThread();
+    void on_checkCredentials(QString login, QString pass);
+    void on_credentials(bool state);
 
 private:
     QDateTime _dt1;

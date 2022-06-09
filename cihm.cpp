@@ -6,8 +6,11 @@ CIhm::CIhm(QWidget *parent)
     , ui(new Ui::CIhm)
 {
     /* Lancement de la boite d'authentification */
+    _app = new CApp();
     _loginDialog = new CLoginDialog();
-    connect(_loginDialog,&CLoginDialog::sig_badPassword,this,&CIhm::on_badPassword);
+    connect(_loginDialog, &CLoginDialog::sig_badPassword, this, &CIhm::on_badPassword);
+    connect(_loginDialog, &CLoginDialog::sig_checkCredentials, _app, &CApp::on_checkCredentials);
+    connect(_app, &CApp::sig_credentials, _loginDialog, &CLoginDialog::on_credentials);
     _loginDialog->exec();
 
 
@@ -33,7 +36,6 @@ CIhm::CIhm(QWidget *parent)
 
     /* Instanciation des objets */
     _zdc = new CZdc();
-    _app = new CApp();
     _csv = new CCsv();
 
     /* Démarrage de la course */

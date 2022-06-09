@@ -34,6 +34,21 @@ void CZdc::sauveAddrClient(CGererClient *_Cgc)
 {
     //QString addrClient = *_Cgc->;
     //emit sig_addrClient(); //Connect avec slot de CApp
+}
+
+void CZdc::sauveButtons(T_BUTTONS &buttons)
+{
+    lock();
+    memcpy(_buttons, &buttons, sizeof(T_BUTTONS));
+    unlock();
+    emit sig_newBtnState();
+}
+
+void CZdc::getButtons(T_BUTTONS &buttons)
+{
+    lock();
+    memcpy(&buttons, _buttons, sizeof (T_BUTTONS));
+    unlock();
 } // getMesures
 
 

@@ -23,6 +23,8 @@ CApp::CApp()
     /* Connexion et lancement des signaux du thread */
     connect(_th, &QThread::finished, _sign, &QObject::deleteLater);
     connect(this, &CApp::sig_workerThread, _sign, &CSignalisation::on_goTravail);
+    connect(this, &CApp::sig_checkCredentials, _bdd, &CBdd::on_checkCredentials);
+    connect(_bdd, &CBdd::sig_credentials, this, &CApp::on_credentials);
     _th->start();
 
 
@@ -50,8 +52,6 @@ void CApp::on_timerStart()
     _dt1 = QDateTime::currentDateTime();
     connect(_capteurPassage1, &CCapteurPassage::sig_coureurArrived, this, &CApp::on_timerStop);
     connect(_capteurPassage2, &CCapteurPassage::sig_coureurArrived, this, &CApp::on_timerStop);
-    //emit sig_base de données
-    //emit sig_affichage feu
 
 }
 
@@ -106,5 +106,10 @@ void CApp::on_srvRemoteGetControl()
 
 void CApp::on_workerThread(){
     emit sig_workerThread();
+}
+
+void CApp::on_credentials(bool state)
+{
+    emit CApp::sig_credentials(state);
 }
 

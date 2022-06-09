@@ -28,12 +28,16 @@ private:
 
 signals:
     void sig_badPassword();
+    void sig_checkCredentials(QString login, QString pass);
 
 private slots:
     void on_pbValider_clicked();
     void on_leId_returnPressed();
     void on_leMdp_returnPressed();
     void on_pbAnnuler_clicked();
+
+public slots:
+    void on_credentials(bool state);
 
 protected:
     void closeEvent(QCloseEvent *event) override;
