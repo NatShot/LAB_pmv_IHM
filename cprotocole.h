@@ -12,6 +12,8 @@
 #include <QtNetwork/QNetworkReply>
 #include <QString>
 
+#include "cbdd.h"
+
 #define MAX_CHAR 25
 
 typedef struct sCoureur{
@@ -55,7 +57,7 @@ public:
     QString prepareJsonTransfertRunner(int idCourse, QList<int> idRunners); // bi-directionnel
     QString prepareJsonTimeRun(int idCourse, T_TIMERUN timeRun); // bi-dir
     QString prepareJsonTransfertCsv(int nbCoureurs, T_CSV *csv); // vers la tablette
-    QString prepareJsonAuthCheck(bool res=false);  // vers tablette
+    QString prepareJsonAuthCheck(bool res=false, CBdd *bdd=nullptr);  // vers tablette
     QString prepareJsonTransfertAllRunners(QString sessionName, QList<QString> nomCoureurs);
     QString prepareJsonBtnState(T_BTN_STATE state);
     QString prepareJsonGetControl();

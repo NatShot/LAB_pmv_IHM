@@ -47,7 +47,7 @@ public:
 signals:
     void sig_newDatas();
     void sig_addrClient();
-    void sig_newBtnState();
+    void sig_newBtnState(T_BUTTONS buttons);
 
 private:
     T_DATAS *_datas;

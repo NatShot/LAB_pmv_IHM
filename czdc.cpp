@@ -39,15 +39,15 @@ void CZdc::sauveAddrClient(CGererClient *_Cgc)
 void CZdc::sauveButtons(T_BUTTONS &buttons)
 {
     lock();
-    memcpy(_buttons, &buttons, sizeof(T_BUTTONS));
+        _datas->buttons = buttons;
     unlock();
-    emit sig_newBtnState();
+    emit sig_newBtnState(buttons);
 }
 
 void CZdc::getButtons(T_BUTTONS &buttons)
 {
     lock();
-    memcpy(&buttons, _buttons, sizeof (T_BUTTONS));
+        buttons = _datas->buttons;
     unlock();
 } // getMesures
 

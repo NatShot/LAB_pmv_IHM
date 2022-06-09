@@ -128,7 +128,7 @@ void CServeur::on_disconnectedClient()
     //QTcpSocket *client = static_cast<QTcpSocket*>(sender()); // Déterminer quel client ?
     //delete client;
     _sock = nullptr;
-    delete _client;
+    //delete _client;
     emit sig_evenementServeur("Déconnexion du client");
 }
 

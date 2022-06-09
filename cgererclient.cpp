@@ -28,13 +28,14 @@ void CGererClient::on_readyRead()
     if(command == "authCheck"){
         QString login, mdp;
         if(_prot.parseJsonAuthCheck(QString(ba), login, mdp)){
-            trame = _prot.prepareJsonAuthCheck(true);
+            trame = _prot.prepareJsonAuthCheck(_bdd->verifConnection(login, mdp), _bdd);
             client->write(trame.toStdString().c_str());
             client->write("\r\n");
             client->flush();
             emit sig_dataClient("", trame);
             // provoquer l'envoi des valeurs de la session en cours.
             // Lire les datas dans la BDD
+            usleep(500000);
             sessionName = _bdd->getSessionName();
             qDebug() << "Nom de la session : " << sessionName;
             nomCoureurs = _bdd->getListeEleves();

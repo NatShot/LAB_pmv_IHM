@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QTcpSocket>
 #include <QHostAddress>
+#include <unistd.h>
 
 #include "cprotocole.h"
 #include "cbdd.h"

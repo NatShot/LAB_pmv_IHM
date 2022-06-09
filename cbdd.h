@@ -39,7 +39,6 @@ public:
 private:
 
     QSqlDatabase PMVBdd;
-
     QString _sqlPath;
     QSqlQuery *_sqlQuery;
     int _index;
@@ -47,6 +46,7 @@ private:
     QString _firstname;
     int _exit;
     void clearElevesList();
+    void clearSessionName();
 
 signals:
 //    void sig_authentification (QString txt){}
@@ -58,6 +58,7 @@ private slots:
 
 public slots:
     void on_checkCredentials(QString login, QString pass);
+    void on_sessionName(QString nomSession);
 
 };
 #endif // CBDD_H

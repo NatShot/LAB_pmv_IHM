@@ -100,11 +100,15 @@ QString CProtocole::prepareJsonTransfertCsv(int nbCoureurs, T_CSV *csv){
     return json;
 } //prepareJsonTransfertCsv
 
-QString CProtocole::prepareJsonAuthCheck(bool res){
+QString CProtocole::prepareJsonAuthCheck(bool res, CBdd *bdd){
     QString json;
     json = addEnteteJson("authCheck");
     json += addSectionJson("data");
-    json += addParamIntJson("success", (res ? '1' : '0'), 4, false);
+    if(bdd->isSessionActive(bdd->getSessionName())){
+        json += addParamIntJson("success", (res ? 1 : 0 ), 4, false);
+    }else{
+        json += addParamIntJson("success", 2, 4, false);
+    }
     json += addPiedJson(2);
     return json;
 } //prepareJsonAuthCheck
@@ -115,10 +119,10 @@ QString CProtocole::prepareJsonTransfertAllRunners(QString sessionName, QList<QS
     json = addEnteteJson("transfertAllRunners");
     json += addSectionJson("data");
     json += addParamTexteJson("sessionName", sessionName, false);
-    json += addParamIntJson("runnersCnt", nomCoureurs.size(), false);
+    json += addParamIntJson("runnersCnt", nomCoureurs.size(), 1);
     for (int i=0 ; i<nomCoureurs.size() ; i++) {
         json += addSectionJson("runner"+QString::number(i+1),4);
-        json += addParamTexteJson("name", nomCoureurs.at(i), false);
+        json += addParamTexteJson("name", nomCoureurs.at(i), 1, false);
         json += addFinSectionJson(4, (i<(nomCoureurs.size()-1)?true:false));
     } // for i
     json += addPiedJson(2);
@@ -192,7 +196,7 @@ QString CProtocole::addParamTexteJson(QString nom, QString valeur, int dec, bool
 QString CProtocole::addParamIntJson(QString nom, int valeur, int dec, bool suite){
     QString json;
     json.fill(' ', dec);
-    json.append("\"" + nom + "\": " + valeur);
+    json.append("\"" + nom + "\": " + QString::number(valeur));
     if(suite)
         json.append(",");
     return json;

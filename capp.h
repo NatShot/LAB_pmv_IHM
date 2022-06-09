@@ -34,6 +34,7 @@ signals:
     void sig_workerThread();
     void sig_checkCredentials(QString login, QString pass);
     void sig_credentials(bool state);
+    void sig_sessionName(QString nomSession);
 
 public slots:
     void on_timerStart();
@@ -44,6 +45,7 @@ public slots:
     void on_workerThread();
     void on_checkCredentials(QString login, QString pass);
     void on_credentials(bool state);
+    void on_nomSession(QString nomSession);
 
 private:
     QDateTime _dt1;

@@ -56,6 +56,8 @@ private slots:
     void on_btnState(char boutons);
 
 
+    void on_pbControl_clicked();
+
 signals:
     void sig_timerStart();
     void sig_coucou();
@@ -63,10 +65,12 @@ signals:
     void sig_getControl();
     void sig_nomSession(QString nomSession);
     void sig_toWorkerThread();
+    void sig_ihmGetControl();
 
 public slots:
     void on_badPassword();
     void on_appRemoteGetControl();
+    void on_newBtnState(T_BUTTONS buttons);
 
 private:
     Ui::CIhm *ui;
@@ -85,5 +89,6 @@ private:
     QStringList _vent;
     QList<QString> ListTpm;
     int _security = 0;
+    T_BUTTONS _buttons;
 };
 #endif // CIHM_H

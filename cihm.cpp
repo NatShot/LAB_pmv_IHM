@@ -58,13 +58,20 @@ CIhm::CIhm(QWidget *parent)
     ui->pbPret->setDisabled(true);
     ui->pbPartez->setDisabled(true);
     ui->pbStop->setDisabled(true);
+    ui->pbControl->setDisabled(true);
+    ui->pbControl->setVisible(false);
+
+    bzero(&_buttons, sizeof(T_BUTTONS));  // init donnée membre image des boutons
+    _zdc->sauveButtons(_buttons); // synchro avec mem partagée
 
     /* Connects a l'arrache */
     connect(this, &CIhm::sig_runnersImport, _app, &CApp::on_runnersImport);
     connect(ui->actionGetControl, &QAction::triggered, _app, &CApp::on_getControl);
+    connect(this, &CIhm::sig_ihmGetControl, _app, &CApp::on_getControl);
     connect(_app, &CApp::sig_appRemoteGetControl, this, &CIhm::on_appRemoteGetControl);
     connect(this, &CIhm::sig_toWorkerThread, _app, &CApp::on_workerThread); // Passerelle de démarrage du Thread
-
+    connect(this, &CIhm::sig_nomSession, _app, &CApp::on_nomSession);
+    connect(ui->actionGetControl_2, &QAction::triggered, _app, &CApp::on_getControl);
 }
 
 CIhm::~CIhm()
@@ -125,9 +132,7 @@ void CIhm::on_pbPartez_clicked()
     T_DATAS datas;
     datas.activeSignalisation = false;
     datas.modeDeFonctionnement = FIXE;
-    //datas.tempo = 5000;
     _zdc->sauveDatas(datas);
-    //emit sig_workerThread();
 
     ui->pbPreparation->setDisabled(true);
     ui->pbAvm->setDisabled(true);
@@ -164,16 +169,17 @@ void CIhm::on_pbStart_clicked()
             msgBox.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
             msgBox.setDefaultButton(QMessageBox::No);
             int reponse = msgBox.exec();
-            if(reponse == QMessageBox::No){}
+            if(reponse == QMessageBox::No){
+
+            }
             else
             {
                 ui->pbStart->setText("STOP");
                 ui->pbPreparation->setEnabled(true);
                 ui->leNomSession->setReadOnly(true);
 
-                QString nomSession;
-                ui->leNomSession->setText(nomSession);
-                emit sig_nomSession(nomSession);//Il faut le connect au serveur ( envoie nomSesison )
+                QString nomSession = ui->leNomSession->text();
+                emit sig_nomSession(nomSession);
 
             }
          }
@@ -195,7 +201,6 @@ void CIhm::on_pbStart_clicked()
             ui->pbPret->setDisabled(true);
             ui->pbPartez->setDisabled(true);
             ui->leNomSession->setReadOnly(false);
-            //Stop la session;
         }
     }//IF STOP
 }
@@ -332,28 +337,60 @@ void CIhm::on_badPassword()
     exit(EXIT_FAILURE);
 }
 
-void CIhm::on_appRemoteGetControl() //Il faut le connect au serveur
+void CIhm::on_appRemoteGetControl()
 {
     ui->tableWidget->setDisabled(true);
     ui->pbAvm->setDisabled(true);
     ui->pbPreparation->setDisabled(true);
     ui->pbPret->setDisabled(true);
     ui->pbPartez->setDisabled(true);
+    ui->pbStop->setDisabled(true);
 
-    QMessageBox msgBox;
-    msgBox.setText("Voulez-vous reprendre le controle?");
-    msgBox.setStandardButtons(QMessageBox::Yes);
-    msgBox.setDefaultButton(QMessageBox::Yes);
-    int reponse = msgBox.exec();
-    if(reponse == QMessageBox::Yes)
-    {
-        ui->tableWidget->setDisabled(false);
-        ui->pbAvm->setDisabled(false);
-        ui->pbPreparation->setDisabled(false);
-        ui->pbPret->setDisabled(false);
-        ui->pbPartez->setDisabled(false);
-        ui->actionGetControl->trigger(); //Il faut le connect au serveur
-    }
+    ui->pbControl->setVisible(true);
+    ui->pbControl->setDisabled(false);
 
 }
 
+void CIhm::on_newBtnState(T_BUTTONS buttons)
+{
+    if(buttons.btnPreparation){
+        on_pbPreparation_clicked();
+    }
+    if(buttons.btnAVM){
+        on_pbAvm_clicked();
+    }
+    if(buttons.btnReady){
+        on_pbPret_clicked();
+    }
+    if(buttons.btnGo){
+        on_pbPartez_clicked();
+    }
+    if(buttons.btnStop){
+        on_pbStop_clicked();
+    }
+}
+
+
+void CIhm::on_pbControl_clicked()
+{
+    ui->tableWidget->setDisabled(false);
+    _zdc->getButtons(_buttons);
+    if(_buttons.btnPreparation){
+       ui->pbAvm->setEnabled(true);
+    }
+    if(_buttons.btnAVM){
+        ui->pbPreparation->setEnabled(true);
+        ui->pbPret->setEnabled(true);
+    }
+    if(_buttons.btnReady){
+         ui->pbAvm->setEnabled(true);
+         ui->pbPartez->setEnabled(true);
+    }
+    if(_buttons.btnGo){
+        ui->pbStop->setEnabled(true);
+    }
+    if(_buttons.btnStop){
+        ui->pbPreparation->setEnabled(true);
+    }
+    emit sig_ihmGetControl();
+}

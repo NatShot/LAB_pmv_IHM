@@ -25,6 +25,7 @@ CApp::CApp()
     connect(this, &CApp::sig_workerThread, _sign, &CSignalisation::on_goTravail);
     connect(this, &CApp::sig_checkCredentials, _bdd, &CBdd::on_checkCredentials);
     connect(_bdd, &CBdd::sig_credentials, this, &CApp::on_credentials);
+    connect(this, &CApp::sig_sessionName, _bdd, &CBdd::on_sessionName);
     _th->start();
 
 
@@ -108,8 +109,18 @@ void CApp::on_workerThread(){
     emit sig_workerThread();
 }
 
+void CApp::on_checkCredentials(QString login, QString pass)
+{
+    emit sig_checkCredentials(login, pass);
+}
+
 void CApp::on_credentials(bool state)
 {
     emit CApp::sig_credentials(state);
+}
+
+void CApp::on_nomSession(QString nomSession)
+{
+    emit sig_sessionName(nomSession);
 }
 

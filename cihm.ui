@@ -98,6 +98,13 @@
           </property>
          </widget>
         </item>
+        <item row="1" column="1">
+         <widget class="QPushButton" name="pbControl">
+          <property name="text">
+           <string>Prendre le contrôle</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item>
@@ -1238,15 +1245,15 @@
     <addaction name="actionImport_CSV"/>
     <addaction name="actionExportCSV"/>
    </widget>
-   <widget class="QMenu" name="menuGetControl">
+   <widget class="QMenu" name="menugetControl">
     <property name="title">
-     <string>GetControl</string>
+     <string>getControl</string>
     </property>
-    <addaction name="actionGetControl"/>
+    <addaction name="actionGetControl_2"/>
    </widget>
    <addaction name="menuSyst_me"/>
    <addaction name="menuCSV"/>
-   <addaction name="menuGetControl"/>
+   <addaction name="menugetControl"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionRedemarrage">
@@ -1287,6 +1294,11 @@
   <action name="actionGetControl">
    <property name="text">
     <string>GetControl</string>
+   </property>
+  </action>
+  <action name="actionGetControl_2">
+   <property name="text">
+    <string>getControl</string>
    </property>
   </action>
  </widget>

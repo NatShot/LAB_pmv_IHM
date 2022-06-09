@@ -25,7 +25,9 @@ bool CBdd::isSessionActive(QString sessionName) {
     _sqlQuery->prepare("SELECT * FROM Session WHERE Nom_Session = :Nom_Session;");
     _sqlQuery->bindValue(":Nom_Session", sessionName);
     _sqlQuery->exec();
-    return (_sqlQuery->size() == 1);
+
+    _sqlQuery->first();
+    return (_sqlQuery->value(0).toString() == "1" ? true : false);
 }
 
 void CBdd::setSessionActive(bool s) {
@@ -33,7 +35,8 @@ void CBdd::setSessionActive(bool s) {
 }
 
 void CBdd::setSessionName(QString sessionName) {
-    _sqlQuery->prepare("UPDATE Session (:id, :Nom_Session)");
+    clearSessionName();
+    _sqlQuery->prepare("INSERT OR REPLACE INTO Session (ID_Session, Nom_Session) VALUES (:id, :Nom_Session);");
     _sqlQuery->bindValue(":id", 1);
     _sqlQuery->bindValue(":Nom_Session", sessionName);
     _sqlQuery->exec();
@@ -73,13 +76,27 @@ QList<QString> CBdd::getListeEleves()
 
     /* Récupération de la liste des Eleves */
 
-    _sqlQuery->prepare("SELECT Nom, Prenom FROM Eleves;");
+    _sqlQuery->prepare("SELECT * FROM Eleves;");
     _sqlQuery->exec();
 
     /* Récupération du nombre de lignes */
 
-    for(int i = 0; i < _sqlQuery->size(); i++){
-        values.append(_sqlQuery->value(i).toString());
+    _sqlQuery->last();
+    QString queryLast = _sqlQuery->value(0).toString();
+    qDebug() << "Query size = " << queryLast;
+    _sqlQuery->first();
+    /* while(!end){
+        values.append(_sqlQuery->value(cptr).toString());
+        if(_sqlQuery->value(cptr).toString() == queryLast){
+            end = true;
+        }else{
+
+        }
+    } */
+
+    for(int i = 0; i < queryLast.toInt(); i++){
+        values.append(_sqlQuery->value(1).toString() + " " + _sqlQuery->value(2).toString());
+        _sqlQuery->next();
     }
 
     return values;
@@ -102,40 +119,54 @@ void CBdd::on_valeursCoureur(QString resTemps, QString resVitesse, QString id, Q
 
 void CBdd::on_checkCredentials(QString login, QString pass)
 {
+    qDebug() << "Login: " << login;
+    qDebug() << "Pass: " << pass;
+    emit sig_credentials(verifConnection(login, pass));
+}
 
+void CBdd::on_sessionName(QString nomSession)
+{
+    setSessionName(nomSession);
 }
 
 bool CBdd::verifConnection(QString Login, QString Pass) {
 
         /* Récupération du nombre de lignbe correspondant dans la BDD */
 
-    _sqlQuery->prepare("SELECT * FROM Authentification WHERE Login = :Login AND Password = :Password;");
+    _sqlQuery->prepare("SELECT * FROM Authentification");
     _sqlQuery->bindValue(":Login", Login);
     _sqlQuery->bindValue(":Password", Pass);
     _sqlQuery->exec();
+    qDebug() << _sqlQuery->lastError().text();
+    qDebug() << Login;
+    qDebug() << Pass;
+    _sqlQuery->first();
 
         /* Vérification de la présence de la ligne correspondante dans la BDD */
 
-    bool isUserFound = _sqlQuery->size() == 1;
-    return isUserFound;
+    if(_sqlQuery->value(1).toString() == Login && _sqlQuery->value(2).toString() == Pass){
+        qDebug() << "VERIF OK";
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 QString CBdd::getSessionName()
 {
 
-    if(PMVBdd.isOpen())
+    _sqlQuery->prepare("SELECT Nom_Session FROM Session;");
+    _sqlQuery->exec();
+
+    _sqlQuery->first();
+    QString value(_sqlQuery->value(0).toString());
+
+    if(!value.isEmpty())
     {
-        _sqlQuery->prepare("SELECT Nom_Session FROM Session;");
-        _sqlQuery->exec();
-
-
-        _sqlQuery->first();
-        QString value(_sqlQuery->value(0).toString());
-        qDebug() << "Value of getSessionName : " << value;
-
         return value;
     }else {
-        qDebug() << "BDD PAS OUVERTE!!!";
+        return "Unknown session.";
     }
 
 }
@@ -143,6 +174,12 @@ QString CBdd::getSessionName()
 void CBdd::clearElevesList()
 {
     _sqlQuery->prepare("DELETE FROM Eleves;");
+    _sqlQuery->exec();
+}
+
+void CBdd::clearSessionName()
+{
+    _sqlQuery->prepare("DELETE FROM Session;");
     _sqlQuery->exec();
 }
 
