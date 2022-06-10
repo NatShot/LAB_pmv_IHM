@@ -83,7 +83,7 @@ void CGererClient::on_readyRead()
     if(command == "btnState"){
         T_BTN_STATE state;
         if(_prot.parseJsonBtnState(QString(ba), &state)){
-            // TODO
+
         } //if
     } //if
 

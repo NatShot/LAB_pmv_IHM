@@ -84,16 +84,8 @@ QList<QString> CBdd::getListeEleves()
     _sqlQuery->last();
     QString queryLast = _sqlQuery->value(0).toString();
     qDebug() << "Query size = " << queryLast;
+
     _sqlQuery->first();
-    /* while(!end){
-        values.append(_sqlQuery->value(cptr).toString());
-        if(_sqlQuery->value(cptr).toString() == queryLast){
-            end = true;
-        }else{
-
-        }
-    } */
-
     for(int i = 0; i < queryLast.toInt(); i++){
         values.append(_sqlQuery->value(1).toString() + " " + _sqlQuery->value(2).toString());
         _sqlQuery->next();
@@ -131,11 +123,9 @@ void CBdd::on_sessionName(QString nomSession)
 
 bool CBdd::verifConnection(QString Login, QString Pass) {
 
-        /* Récupération du nombre de lignbe correspondant dans la BDD */
+        /* Récupération du nombre de ligne correspondant dans la BDD */
 
     _sqlQuery->prepare("SELECT * FROM Authentification");
-    _sqlQuery->bindValue(":Login", Login);
-    _sqlQuery->bindValue(":Password", Pass);
     _sqlQuery->exec();
     qDebug() << _sqlQuery->lastError().text();
     qDebug() << Login;
