@@ -72,6 +72,7 @@ CIhm::CIhm(QWidget *parent)
     connect(this, &CIhm::sig_toWorkerThread, _app, &CApp::on_workerThread); // Passerelle de démarrage du Thread
     connect(this, &CIhm::sig_nomSession, _app, &CApp::on_nomSession);
     connect(ui->actionGetControl_2, &QAction::triggered, _app, &CApp::on_getControl);
+    // connect(sig_finCourse --> app) apres creation capp
 }
 
 CIhm::~CIhm()
@@ -157,6 +158,8 @@ void CIhm::on_pbStop_clicked()
 
     ui->pbPreparation->setEnabled(true);
     ui->pbStop->setDisabled(true);
+
+    // emit sig_finCourse()
 
     // avertir _app de l'arret de course
 }
