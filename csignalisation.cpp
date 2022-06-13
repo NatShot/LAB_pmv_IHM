@@ -6,7 +6,7 @@ CSignalisation::CSignalisation(QObject *parent): QObject(parent)
     _gpioRed = new CGpio(this, 18, OUT);
     _gpioFan = new CGpio(this, 4, BOTH);
     _gpioGreen = new CGpio(this, 23, OUT);
-    _gpioBuzzer = new CGpio(this, 18, OUT);
+    _gpioBuzzer = new CGpio(this, 22, OUT);
     _zdc = new CZdc();
 }
 
