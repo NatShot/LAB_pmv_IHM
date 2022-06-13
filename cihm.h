@@ -71,6 +71,7 @@ public slots:
     void on_badPassword();
     void on_appRemoteGetControl();
     void on_newBtnState(T_BUTTONS buttons);
+    void on_stopRun();
 
 private:
     Ui::CIhm *ui;

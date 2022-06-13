@@ -73,6 +73,7 @@ CIhm::CIhm(QWidget *parent)
     connect(this, &CIhm::sig_nomSession, _app, &CApp::on_nomSession);
     connect(ui->actionGetControl_2, &QAction::triggered, _app, &CApp::on_getControl);
     // connect(sig_finCourse --> app) apres creation capp
+    connect(_app, &CApp::sig_endRun, this, &CIhm::on_stopRun);
 }
 
 CIhm::~CIhm()
@@ -156,8 +157,7 @@ void CIhm::on_pbStop_clicked()
     datas.modeDeFonctionnement = ETEINT;
     _zdc->sauveDatas(datas);
 
-    ui->pbPreparation->setEnabled(true);
-    ui->pbStop->setDisabled(true);
+    on_stopRun();
 
     // emit sig_finCourse()
 
@@ -374,6 +374,12 @@ void CIhm::on_newBtnState(T_BUTTONS buttons)
     if(buttons.btnStop){
         on_pbStop_clicked();
     }
+}
+
+void CIhm::on_stopRun()
+{
+    ui->pbPreparation->setEnabled(true);
+    ui->pbStop->setDisabled(true);
 }
 
 

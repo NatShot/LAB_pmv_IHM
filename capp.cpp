@@ -67,6 +67,7 @@ void CApp::on_timerStop(int ordre, QDateTime dt2)
     // si les deux sont arrivés alors fin de course
     if ( _zdc->getCoureurArrived(1) && _zdc->getCoureurArrived(2)) {
         // TODO ENVOYER SIGNAL D'ENVOI DE TRAME TABLETTE INFO SESSION
+        emit sig_endRun();
     } // 2 arrived
 
 

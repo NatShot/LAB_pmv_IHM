@@ -37,6 +37,7 @@ signals:
     void sig_checkCredentials(QString login, QString pass);
     void sig_credentials(bool state);
     void sig_sessionName(QString nomSession);
+    void sig_endRun();
 
 public slots:
     void on_timerStart();
