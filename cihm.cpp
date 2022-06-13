@@ -150,12 +150,15 @@ void CIhm::on_pbPartez_clicked()
 void CIhm::on_pbStop_clicked()
 {
     T_DATAS datas;
+    _zdc->getDatas(datas);
     datas.activeSignalisation = false;
     datas.modeDeFonctionnement = ETEINT;
     _zdc->sauveDatas(datas);
 
     ui->pbPreparation->setEnabled(true);
     ui->pbStop->setDisabled(true);
+
+    // avertir _app de l'arret de course
 }
 
 

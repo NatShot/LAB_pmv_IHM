@@ -96,7 +96,7 @@ void CGererClient::on_sendJson(QString type, QString param){
 
     if(type == "getControl"){
         trame = _prot.parseJsonGetControl(trame);
-        emettreVersClients(trame);
+        emettreVersClient(trame);
     } //getControl
 
     if(type == "btnState"){
@@ -107,7 +107,7 @@ void CGererClient::on_sendJson(QString type, QString param){
         state.btnReady = param.toUInt()&0x08;
         state.btnGo = param.toUInt()&0x10;
         trame = _prot.prepareJsonBtnState(state);
-        emettreVersClients(trame);
+        emettreVersClient(trame);
     } //btnState
 }
 
@@ -115,10 +115,10 @@ void CGererClient::on_clientGetControl()
 {
     QString trame;
     trame = _prot.prepareJsonGetControl();
-    emettreVersClients(trame);
+    emettreVersClient(trame);
 } //onSendJson
 
-int CGererClient::emettreVersClients(QString mess){
+int CGererClient::emettreVersClient(QString mess){
     _sock->write(mess.toStdString().c_str());
     _sock->write("\r\n");
     _sock->flush();

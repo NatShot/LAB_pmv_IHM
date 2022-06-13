@@ -4,6 +4,7 @@
 
 #include <QObject>
 #include <QSharedMemory>
+#include <string.h>
 #include "cgererclient.h"
 
 
@@ -27,6 +28,10 @@ typedef struct s_data {
     T_BUTTONS buttons;
     T_MODE_FEU modeDeFonctionnement;
     bool activeSignalisation;
+    quint64 t[2]; // pour les 2 coureurs d'une course
+    double v[2];
+    bool b[2];  // true si coureur arrivé
+    char chaine[2][50];
     //int tempo;
 } T_DATAS;
 
@@ -43,6 +48,12 @@ public:
     void sauveAddrClient(CGererClient *_Cgc);
     void sauveButtons(T_BUTTONS &buttons);
     void getButtons(T_BUTTONS &buttons);
+    void setTemps(int ordre, quint64 temps);
+    quint64 getTemps(int ordre);
+    void setVitesse(int ordre, double vit);
+    double getVitesse(int ordre);
+    void setCoureurArrived(int ordre, bool etat);
+    bool getCoureurArrived(int ordre);
 
 signals:
     void sig_newDatas();

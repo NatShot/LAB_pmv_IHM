@@ -6,8 +6,11 @@ CZdc::CZdc(QObject *parent) : QSharedMemory(parent)
     int res = create(sizeof(T_DATAS));
     if (!res) {
         attach();
-    }
-    _datas = static_cast<T_DATAS *>(data());
+        _datas = static_cast<T_DATAS *>(data());
+    } else {
+        _datas = static_cast<T_DATAS *>(data());
+        bzero(_datas, sizeof(T_DATAS));
+    } // else
 }
 
 CZdc::~CZdc()
@@ -49,6 +52,51 @@ void CZdc::getButtons(T_BUTTONS &buttons)
     lock();
         buttons = _datas->buttons;
     unlock();
-} // getMesures
+}
+
+void CZdc::setTemps(int ordre, quint64 temps)
+{
+    lock();
+        _datas->t[ordre-1] = temps;
+    unlock();
+}
+
+quint64 CZdc::getTemps(int ordre)
+{
+    lock();
+        quint64 tmps = _datas->t[ordre-1];
+    unlock();
+    return tmps;
+}
+
+void CZdc::setVitesse(int ordre, double vit)
+{
+    lock();
+    _datas->v[ordre-1] = vit;
+    unlock();
+}
+
+double CZdc::getVitesse(int ordre)
+{
+    lock();
+    double vitesse = _datas->v[ordre-1];
+    unlock();
+    return vitesse;
+}
+
+void CZdc::setCoureurArrived(int ordre, bool etat)
+{
+    lock();
+    _datas->b[ordre-1] = etat;
+    unlock();
+}
+
+bool CZdc::getCoureurArrived(int ordre)
+{
+    lock();
+    bool fini = _datas->b[ordre-1];
+    unlock();
+    return fini;
+}
 
 

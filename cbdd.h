@@ -34,7 +34,7 @@ public:
     QList<QString> getListeEleves();
 
     void setCoureurAuDepart (QString _name, int ligne, int couloir);
-    bool verifConnection (QString bddLogin, QString bddPass);
+    bool verifConnection (QString login, QString pass);
 
 private:
 

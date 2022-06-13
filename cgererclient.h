@@ -27,7 +27,7 @@ private:
     CProtocole _prot;
     QTcpSocket *_sock;
     QString sessionName;
-    int emettreVersClients(QString mess);
+    int emettreVersClient(QString mess);
     CBdd *_bdd;
 
 signals:

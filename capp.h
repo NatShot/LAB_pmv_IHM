@@ -11,6 +11,7 @@
 #include "cserveur.h"
 #include "canemometre.h"
 #include "cbdd.h"
+#include "czdc.h"
 #include "csignalisation.h"
 
 class CApp : public QObject
@@ -21,6 +22,7 @@ public:
     ~CApp();
 
     CBdd *_bdd;
+    CZdc *_zdc;
 
 signals:
     void sig_timerStart();
@@ -49,9 +51,9 @@ public slots:
 
 private:
     QDateTime _dt1;
-    qint64 _deltaTm;
-    qint64 _deltaTs;
-    qint64 _deltaTms;
+    quint64 _deltaTm;
+    quint64 _deltaTs;
+    quint64 _deltaTms;
     CCapteurPassage *_capteurPassage1;
     CCapteurPassage *_capteurPassage2;
     int _ligne;

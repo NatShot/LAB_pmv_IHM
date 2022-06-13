@@ -121,20 +121,20 @@ void CBdd::on_sessionName(QString nomSession)
     setSessionName(nomSession);
 }
 
-bool CBdd::verifConnection(QString Login, QString Pass) {
+bool CBdd::verifConnection(QString login, QString pass) {
 
         /* Récupération du nombre de ligne correspondant dans la BDD */
 
     _sqlQuery->prepare("SELECT * FROM Authentification");
     _sqlQuery->exec();
     qDebug() << _sqlQuery->lastError().text();
-    qDebug() << Login;
-    qDebug() << Pass;
+    qDebug() << login;
+    qDebug() << pass;
     _sqlQuery->first();
 
         /* Vérification de la présence de la ligne correspondante dans la BDD */
 
-    if(_sqlQuery->value(1).toString() == Login && _sqlQuery->value(2).toString() == Pass){
+    if(_sqlQuery->value(1).toString() == login && _sqlQuery->value(2).toString() == pass){
         qDebug() << "VERIF OK";
         return true;
     }

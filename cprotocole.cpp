@@ -21,7 +21,7 @@ QString CProtocole::prepareJsonTransfertRunner(int idCourse, QList<int> idRunner
     return json;
 } //prepareJsonTransferRunner
 
-bool CProtocole::parseJsonTransferAllRunners(int *nbCoureurs, QList<T_COUREUR> *coureurs){
+bool CProtocole::parseJsonTransfertAllRunners(int *nbCoureurs, QList<T_COUREUR> *coureurs){
 
     return true;
 }

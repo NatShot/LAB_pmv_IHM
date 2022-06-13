@@ -8,6 +8,7 @@ CApp::CApp()
 
     /* Initialisation des objets de communications
      * avec la tablette */
+    _zdc = new CZdc();
     _bdd = new CBdd();
     _serv = new CServeur(_bdd);
 
@@ -37,6 +38,7 @@ CApp::CApp()
 CApp::~CApp()
 {
     delete _sign;
+    delete _zdc;
     _th->quit();
     _th->wait();
     delete _serv;
@@ -53,7 +55,6 @@ void CApp::on_timerStart()
     _dt1 = QDateTime::currentDateTime();
     connect(_capteurPassage1, &CCapteurPassage::sig_coureurArrived, this, &CApp::on_timerStop);
     connect(_capteurPassage2, &CCapteurPassage::sig_coureurArrived, this, &CApp::on_timerStop);
-
 }
 
 void CApp::on_timerStop(int ordre, QDateTime dt2)
@@ -61,6 +62,12 @@ void CApp::on_timerStop(int ordre, QDateTime dt2)
     CCapteurPassage *cp = static_cast<CCapteurPassage *>(sender());
     calculateTime(dt2, ordre);
     disconnect(cp, &CCapteurPassage::sig_coureurArrived, this, &CApp::on_timerStop);
+    // si les deux sont arrivés alors fin de course
+    if ( _zdc->getCoureurArrived(1) && _zdc->getCoureurArrived(2)) {
+        // TODO
+    } // 2 arrived
+
+
 }
 
 void CApp::calculateSpeed(int ordre)
@@ -73,14 +80,17 @@ void CApp::calculateSpeed(int ordre)
     deltaTs = deltaTs + (deltaTms / 1000);
 
     double Calcul = 50.0 / deltaTs * 3.6;
+    _zdc->setVitesse(ordre, Calcul);
+    // TODO sauver Calcul dans la bdd
     QString resultatVitesse = QString::number(Calcul, 'g', 2);
     emit sig_resVitesse(resultatVitesse, ordre, _ligne);
-
 }
 
 void CApp::calculateTime(QDateTime dt2, int ordre)
 {
-    _deltaTms = _dt1.msecsTo(dt2);
+    _deltaTms = static_cast<quint64> (_dt1.msecsTo(dt2));
+    _zdc->setTemps(ordre, _deltaTms);
+    // sauver _deltaTms dans la bdd
     _deltaTm = _deltaTms / 60000;
     _deltaTs = (_deltaTms % 60000) / 1000;
     _deltaTms = (_deltaTms % 60000) % 1000;
@@ -88,7 +98,6 @@ void CApp::calculateTime(QDateTime dt2, int ordre)
 
     QString resultatTemps = QString::number(_deltaTm) + " : " + QString::number(_deltaTs) +" : " + QString::number(_deltaTms);
     emit sig_resTemps(resultatTemps, ordre, _ligne);
-
 }
 
 void CApp::on_runnersImport(QStringList nomEleves){
