@@ -148,7 +148,13 @@ QString CProtocole::prepareJsonGetControl()
     json = addEnteteJson("getControl", false);
     json += addPiedJson(1);
     return json;
-} //prepareJsonGetControl
+}//prepareJsonGetControl
+
+//QString CProtocole::prepareJsonTransfertSession(int runNumber, &QList<QList<QString>> runs)
+//{
+//    QString json;
+//    json = adddEnteteJson("sessionTransfert");
+//} //prepareJsonTransfertSession
 
 QString CProtocole::addEnteteJson(QString commande, bool suite){
     QString json;

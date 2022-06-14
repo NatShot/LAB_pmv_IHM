@@ -61,6 +61,7 @@ public:
     QString prepareJsonTransfertAllRunners(QString sessionName, QList<QString> nomCoureurs);
     QString prepareJsonBtnState(T_BTN_STATE state);
     QString prepareJsonGetControl();
+    //QString prepareJsonTransfertSession(int runNumber, &QList<QList<QString>> runs);
 
     // Méthodes pour parser les trames JSON arrivant du terminal
     bool parseJsonGetCsv(QString trame);  // vers le serveur
